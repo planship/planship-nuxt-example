@@ -1,13 +1,13 @@
 <template>
   <div class="px-16 py-8">
-    <RadioGroup v-model="selected">
+    <RadioGroup v-model="planSelection">
       <RadioGroupLabel class="sr-only">Plan</RadioGroupLabel>
       <div class="flex justify-between gap-x-6 lg:grid lg:grid-cols-3">
         <RadioGroupOption
           as="template"
           v-for="plan in plans"
-          :key="plan.name"
-          :value="plan"
+          :key="plan.slug"
+          :value="plan.slug"
           v-slot="{ active, checked }"
         >
           <div
@@ -77,8 +77,13 @@
       </div>
     </RadioGroup>
     <div class="flex mt-10 justify-end">
-      <button class="rounded-md px-10 py-3 text-med text-white font-medium bg-green-500 hover:bg-opacity-90">
-        Apply
+      <button
+        class="rounded-md px-10 py-3 text-med text-white font-medium"
+        :class="currentPlanSlug != planSelection ? 'bg-green-500 hover:bg-opacity-90': 'bg-gray-400'"
+        :disabled="currentPlanSlug == planSelection"
+        @click="modifySubscription(planSelection)"
+      >
+        Change subscription
       </button>
     </div>
   </div>
@@ -86,6 +91,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { usePlanshipStore } from '@/stores/planship'
+import { storeToRefs } from 'pinia'
+
 import {
   RadioGroup,
   RadioGroupLabel,
@@ -93,9 +101,17 @@ import {
   RadioGroupOption,
 } from '@headlessui/vue'
 
+const planshipStore = usePlanshipStore()
+await planshipStore.fetchSubscriptions()
+
+const { modifySubscription } = planshipStore
+
+const { currentPlanSlug } = storeToRefs(planshipStore)
+
 const plans = [
   {
     name: 'Small',
+    slug: 'small',
     description: 'Best option for personal clicking',
     projects: 1,
     clicks: 5,
@@ -105,6 +121,7 @@ const plans = [
   },
   {
     name: 'Medium',
+    slug: 'medium',
     description: 'Best option for small clicking teams',
     projects: 5,
     clicks: 25,
@@ -114,6 +131,7 @@ const plans = [
   },
   {
     name: 'Large',
+    slug: 'large',
     description: 'Ideal for large clicking organizations',
     projects: 10,
     clicks: 100,
@@ -123,5 +141,6 @@ const plans = [
   },
 ]
 
-const selected = ref(plans[0])
+const planSelection = ref(planshipStore.currentPlanSlug)
+
 </script>

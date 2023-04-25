@@ -15,4 +15,12 @@ export default defineNuxtConfig({
   	'@pinia/nuxt',
   	'@pinia-plugin-persistedstate/nuxt',
   ],
+
+  vite: {
+        server: {
+            fs: {
+                allow: ["/Users/pawel/projects/planship/planship-node-sdk"]
+            }
+        }
+    }
 })

@@ -3,8 +3,8 @@ import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/user'
 import { useProjectsStore } from '@/stores/projects'
 
-import { Planship } from 'planship'
-const planship = new Planship('planshipclicker', '973NYSQ4GQJZ8JBFKIOK', 'RJSazPD8NEM5PEzIl8JoXIRJNZm3uAhX')
+// import { Planship } from '@planship/axios-client'
+//const planship = undefined // new Planship('planshipclicker','http://main:8000' ,'973NYSQ4GQJZ8JBFKIOK', 'RJSazPD8NEM5PEzIl8JoXIRJNZm3uAhX')
 
 const userStore = useUserStore()
 
@@ -81,21 +81,21 @@ export const usePlanshipStore = defineStore('planship', {
       if(!force && this.entitlementsDict && Object.keys(this.entitlementsDict).length)
         return
 
-      this.entitlementsDict = await planship.getEntitlements(userStore.currentUser.email)
+      // this.entitlementsDict = await planship.getEntitlements(userStore.currentUser.email)
     },
 
     async fetchSubscriptions(force: boolean = false) {
       if(!force && this.subscriptions && this.subscriptions.length)
         return
 
-      this.subscriptions = await planship.listSubscriptions(userStore.currentUser.email)
+      // this.subscriptions = await planship.listSubscriptions(userStore.currentUser.email)
     },
 
     async fetchPlans(force: boolean = false) {
       if(!force && this.plans && this.plans.length)
         return
 
-      this.plans = await planship.listPlans()
+      //this.plans = await planship.listPlans()
     },
 
     async fetchAll() {
@@ -105,21 +105,21 @@ export const usePlanshipStore = defineStore('planship', {
     },
 
     async modifySubscription(newPlanSlug: string) {
-      await planship.modifySubscription(userStore.currentUser.email, this.defaultSubscription.subscription_id, {
+      /*await planship.modifySubscription(userStore.currentUser.email, this.defaultSubscription.subscription_id, {
         planSlug: newPlanSlug,
         renewPlanSlug: newPlanSlug,
       })
       await this.fetchSubscriptions(true);
-      await this.fetchEntitlements(true);
+      await this.fetchEntitlements(true);*/
     },
 
     async reportButtonClicks(count: number) {
-      await planship.reportUsage(userStore.currentUser.email, 'button-clicks', count)
+      //await planship.reportUsage(userStore.currentUser.email, 'button-clicks', count)
       await this.fetchEntitlements(true);
     },
 
     async getTotalButtonClicks() {
-      const usage = await planship.getUsage(userStore.currentUser.email, 'button-clicks')
+      // const usage = await planship.getUsage(userStore.currentUser.email, 'button-clicks')
       return usage.usage
     }
   },

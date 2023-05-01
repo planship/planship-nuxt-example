@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   vite: {
         server: {
             fs: {
-                allow: ["/Users/pawel/projects/planship/planship-node-sdk"]
+                allow: ["/Users/pawel/projects/planship/planship-axios-sdk"]
             }
         }
     }

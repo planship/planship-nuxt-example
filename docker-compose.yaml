@@ -2,6 +2,7 @@ services:
   planship-nuxt-example-app:
     build:
       context: .
+    command: pnpm dev
     restart: always
     ports:
       - "3000:3000"
@@ -10,10 +11,6 @@ services:
       - planship-dev-network
     volumes:
       - ./app:/app/app
-      - node_modules:/app/node_modules
-
-volumes:
-  node_modules:
 
 networks:
   planship-dev-network:

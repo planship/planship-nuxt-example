@@ -22,5 +22,12 @@ export default defineNuxtConfig({
                 allow: ["/Users/pawel/projects/planship/planship-axios-sdk"]
             }
         }
-    }
+  },
+
+  runtimeConfig: {
+    public: {
+      clientPlanshipApiUrl: process.env.PLANSHIP_API_CLIENT_URL || 'http://localhost:8002',
+      serverPlanshipApiUrl: process.env.PLANSHIP_API_SERVER_URL || 'http://main:8002',
+    },
+  }
 })

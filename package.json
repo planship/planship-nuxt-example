@@ -2,9 +2,9 @@
   "name": "nuxt-app",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
+    "build": "cd app && nuxt build",
     "dev": "cd app && nuxt dev",
-    "generate": "nuxt generate",
+    "generate": "cd app && nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },

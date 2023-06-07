@@ -5,7 +5,7 @@ specifiers:
   '@heroicons/vue': ^2.0.17
   '@pinia-plugin-persistedstate/nuxt': ^1.1.1
   '@pinia/nuxt': ^0.4.8
-  '@planship/axios-client': ^0.0.7
+  '@planship/axios-client': ^0.0.10
   autoprefixer: ^10.4.14
   nuxt: ^3.3.3
   pinia: ^2.0.34
@@ -16,7 +16,7 @@ dependencies:
   '@headlessui/vue': 1.7.13
   '@heroicons/vue': 2.0.17
   '@pinia/nuxt': 0.4.8
-  '@planship/axios-client': 0.0.7
+  '@planship/axios-client': 0.0.10
   pinia: 2.0.34
 
 devDependencies:
@@ -789,8 +789,8 @@ packages:
       - typescript
       - vue
 
-  /@planship/axios-client/0.0.7:
-    resolution: {integrity: sha512-FSsfoGajtok38p2ps1S5ZYRDiyNcRqG77/Wb14Yfcq7Sz5G3G2/hsdCIOhuBNwlQ4YE9YeSRHHlJoLqkIJ16rA==}
+  /@planship/axios-client/0.0.10:
+    resolution: {integrity: sha512-7VP9qaqnx3LlnG1faS7erB1uCv9zOa0IJJ1KjrTwdN368eQ7x8akncwSEVzwlDpSOVmRZT6oQsMbnY0aDhlFCA==}
     dependencies:
       axios: 1.2.4
     transitivePeerDependencies:

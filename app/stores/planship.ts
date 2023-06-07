@@ -107,7 +107,13 @@ export const usePlanshipStore = defineStore('planship', {
       if(!force && this.plans && this.plans.length)
         return
 
-      this.plans = await this.apiClient.listPlans()
+      const plans = await this.apiClient.listPlans()
+      this.plans = await Promise.all(plans.map(async ({slug}) => {
+
+        const plan = await this.apiClient.getPlan(slug)
+        plan.entitlements.sort((a, b) => (a.order-b.order))
+        return plan
+      }))
     },
 
     async fetchAll() {

@@ -52,21 +52,14 @@
                   class="inline"
                 >
                   <p class="font-light my-4">{{ plan.description }}</p>
-                  <ul role="list" class="mb-1 space-y-1 text-left" :class="checked ? 'text-white' : 'text-gray-900'">
+                  <ul
+                    v-for="entitlement in plan.entitlements"
+                    :key="entitlement.name"
+                    :value="entitlement.name"
+                    role="list" class="mb-1 space-y-1 text-left" :class="checked ? 'text-white' : 'text-gray-900'"
+                  >
                     <li class="flex items-center space-x-2">
-                        <span><span class="font-semibold">{{plan.projects}}</span> project</span>
-                    </li>
-                    <li class="flex items-center space-x-2">
-                        <span>Up to <span class="font-semibold">{{plan.clicks}}</span> clicks per month</span>
-                    </li>
-                    <li class="flex items-center space-x-2">
-                        <span>Supported project types: <span class="font-semibold"> {{ plan.project_types.join(', ') }}</span></span>
-                    </li>
-                    <li class="flex items-center space-x-2">
-                        <span :class="!plan.premium_button ? 'line-through' : ''">Premium project button</span>
-                    </li>
-                     <li class="flex items-center space-x-2">
-                        <span :class="!plan.analytics ? 'line-through' : ''">Analytics panel</span>
+                        <span v-html="entitlement.display_caption" />
                     </li>
                   </ul>
                 </RadioGroupDescription>
@@ -102,45 +95,11 @@ import {
 } from '@headlessui/vue'
 
 const planshipStore = usePlanshipStore()
-await planshipStore.fetchSubscriptions()
+await planshipStore.fetchAll()
 
 const { modifySubscription } = planshipStore
 
-const { currentPlanSlug } = storeToRefs(planshipStore)
-
-const plans = [
-  {
-    name: 'Small',
-    slug: 'small',
-    description: 'Best option for personal clicking',
-    projects: 1,
-    clicks: 5,
-    project_types: ['Single'],
-    premium_button: false,
-    analytics: false,
-  },
-  {
-    name: 'Medium',
-    slug: 'medium',
-    description: 'Best option for small clicking teams',
-    projects: 5,
-    clicks: 25,
-    project_types: ['Single', 'Random'],
-    premium_button: true,
-    analytics: false,
-  },
-  {
-    name: 'Large',
-    slug: 'large',
-    description: 'Ideal for large clicking organizations',
-    projects: 10,
-    clicks: 100,
-    project_types:  ['Single', 'Random', 'Batch'],
-    premium_button: true,
-    analytics: true,
-  },
-]
-
+const { currentPlanSlug, plans } = storeToRefs(planshipStore)
 const planSelection = ref(planshipStore.currentPlanSlug)
 
 </script>

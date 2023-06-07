@@ -115,7 +115,6 @@ projectsStore.setCurrentProject("")
 const { projects } = storeToRefs(projectsStore)
 
 const planshipStore = usePlanshipStore()
-await planshipStore.fetchAll()
 const { entitlements, canCreateProject } = storeToRefs(planshipStore)
 
 

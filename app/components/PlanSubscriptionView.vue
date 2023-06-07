@@ -95,7 +95,6 @@ import {
 } from '@headlessui/vue'
 
 const planshipStore = usePlanshipStore()
-await planshipStore.fetchAll()
 
 const { modifySubscription } = planshipStore
 

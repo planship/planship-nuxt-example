@@ -59,7 +59,7 @@
                     role="list" class="mb-1 space-y-1 text-left" :class="checked ? 'text-white' : 'text-gray-900'"
                   >
                     <li class="flex items-center space-x-2">
-                        <span v-html="entitlement.display_caption" />
+                        <span v-html="entitlement.name" />
                     </li>
                   </ul>
                 </RadioGroupDescription>

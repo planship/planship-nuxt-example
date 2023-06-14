@@ -10,7 +10,7 @@ const userStore = useUserStore()
 
 function createApiClient() {
   const apiUrl = typeof window === "undefined" ? useRuntimeConfig().public.serverPlanshipApiUrl : useRuntimeConfig().public.clientPlanshipApiUrl
-  return new Planship('planshipclicker', apiUrl, '973NYSQ4GQJZ8JBFKIOK', 'RJSazPD8NEM5PEzIl8JoXIRJNZm3uAhX')
+  return new Planship('clicker', apiUrl, '973NYSQ4GQJZ8JBFKIOK', 'RJSazPD8NEM5PEzIl8JoXIRJNZm3uAhX')
 }
 
 

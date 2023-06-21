@@ -71,7 +71,6 @@ if (route.params.project) {
 const { currentProject, projects }  = storeToRefs(projectsStore)
 
 const planshipStore = usePlanshipStore()
-await planshipStore.fetchAll()
 
 const { currentPlanName, entitlements } = storeToRefs(planshipStore)
 

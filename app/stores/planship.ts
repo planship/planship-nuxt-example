@@ -18,7 +18,7 @@ function createApiClient() {
 export class Entitlements {
 
   private entitlementsDict: {} = {
-    "button-clicks": 5,
+    "subscription-button-clicks": 5,
     "max-projects": 1,
     "premium-button": false,
     "analytics-panel": false,
@@ -31,8 +31,8 @@ export class Entitlements {
       this.entitlementsDict = entitlementsDict;
   }
 
-  get buttonClicks(): number {
-    return this.entitlementsDict['button-clicks']
+  get subscriptionButtonClicks(): number {
+    return this.entitlementsDict['subscription-button-clicks']
   }
 
   get maxProjects(): number {
@@ -85,7 +85,7 @@ export const usePlanshipStore = defineStore('planship', {
     },
 
     canGenerateButtonClick: (state) => {
-      return state.entitlements.buttonClicks > 0
+      return state.entitlements.subscriptionButtonClicks > 0
     },
   },
   actions: {
@@ -132,13 +132,13 @@ export const usePlanshipStore = defineStore('planship', {
     },
 
     async reportButtonClicks(count: number) {
-      await this.apiClient.reportUsage(userStore.currentUser.email, 'button-clicks', count)
+      await this.apiClient.reportUsage(userStore.currentUser.email, 'button-click', count)
       await this.fetchEntitlements(true);
     },
 
     async getTotalButtonClicks() {
-      const usage = await this.apiClient.getUsage(userStore.currentUser.email, 'button-clicks')
-      return usage.usage
+      const usage = await this.apiClient.getResourceUsage(userStore.currentUser.email, 'subscription-button-clicks')
+      return usage
     }
   },
 })

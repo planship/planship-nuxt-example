@@ -19,7 +19,6 @@
     "@headlessui/vue": "^1.7.13",
     "@heroicons/vue": "^2.0.17",
     "@pinia/nuxt": "^0.4.8",
-    "@planship/axios-client": "^0.0.10",
     "pinia": "^2.0.34"
   }
 }

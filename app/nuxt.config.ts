@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   vite: {
         server: {
             fs: {
-                allow: ["/Users/pawel/projects/planship/planship-axios-sdk"]
+                allow: ["/Users/pawelwojnarowicz/projects/planship/planship-axios-sdk"]
             }
         }
   },
@@ -27,7 +27,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       clientPlanshipApiUrl: process.env.PLANSHIP_API_CLIENT_URL || 'http://localhost:8002',
-      serverPlanshipApiUrl: process.env.PLANSHIP_API_SERVER_URL || 'http://main:8002',
+      serverPlanshipApiUrl: process.env.PLANSHIP_API_SERVER_URL || 'http://localhost:8002',
     },
   }
 })

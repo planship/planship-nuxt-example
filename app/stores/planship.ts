@@ -131,13 +131,13 @@ export const usePlanshipStore = defineStore('planship', {
       await this.fetchEntitlements(true);
     },
 
-    async reportButtonClicks(count: number) {
-      await this.apiClient.reportUsage(userStore.currentUser.email, 'button-click', count)
+    async reportButtonClicks(count: number, projectName: string) {
+      await this.apiClient.reportUsage(userStore.currentUser.email, 'button-click', count, projectName)
       await this.fetchEntitlements(true);
     },
 
     async getTotalButtonClicks() {
-      const usage = await this.apiClient.getResourceUsage(userStore.currentUser.email, 'subscription-button-clicks')
+      const usage = await this.apiClient.getMeteringIdResourcesUsage(userStore.currentUser.email, 'button-click')
       return usage
     }
   },

@@ -51,7 +51,7 @@ const batchClicks = ref(5)
 
 function generateClicks(count) {
 	props.project.usage+=count
-	planshipStore.reportButtonClicks(count)
+	planshipStore.reportButtonClicks(count, props.project.name)
 }
 
 

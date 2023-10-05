@@ -8,9 +8,22 @@ import { Planship } from '@planship/axios-client'
 const userStore = useUserStore()
 
 
-function createApiClient() {
-  const apiUrl = typeof window === "undefined" ? useRuntimeConfig().public.serverPlanshipApiUrl : useRuntimeConfig().public.clientPlanshipApiUrl
-  return new Planship('clicker', apiUrl, '973NYSQ4GQJZ8JBFKIOK', 'RJSazPD8NEM5PEzIl8JoXIRJNZm3uAhX')
+async function getAccessToken() {
+  return useFetch('/api/planshipToken').then((response) => {
+    return response.data.value
+  })
+}
+
+function getApiUrl() {
+  return typeof window === "undefined" ? useRuntimeConfig().public.serverPlanshipApiUrl : useRuntimeConfig().public.clientPlanshipApiUrl
+}
+
+function createServerApiClient() {
+  return new Planship('clicker', getApiUrl(), useRuntimeConfig().public.planshipApiClientId , useRuntimeConfig().planshipApiClientSecret)
+}
+
+function createBrowserApiClient() {
+  return new Planship('clicker', getApiUrl(), useRuntimeConfig().public.planshipApiClientId, getAccessToken)
 }
 
 
@@ -57,12 +70,12 @@ export const usePlanshipStore = defineStore('planship', {
     subscriptions: [],
     entitlementsDict: {},
     plans: [],
-    apiClient: createApiClient(),
+    apiClient: createServerApiClient(),
   }),
 
   hydrate(state, initialState) {
     // reacreate the Planship API client one the client side
-    state.apiClient = createApiClient()
+    state.apiClient = createBrowserApiClient()
   },
 
   getters: {

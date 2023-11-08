@@ -9,7 +9,7 @@ export type ProjectsState = {
 
 
 export const useProjectsStore = defineStore('projects', {
-  state: () => ({ 
+  state: () => ({
     projects: [
       { name: 'First project', slug: 'first-project', type: "Single", usage: 0},
       { name: 'Second project', slug: 'second-project', type: "Single", usage: 0},

@@ -16,13 +16,6 @@ export default defineNuxtConfig({
   	'@pinia-plugin-persistedstate/nuxt',
   ],
 
-  vite: {
-        server: {
-            fs: {
-                allow: ["/Users/pawelwojnarowicz/projects/planship/planship-axios-sdk"]
-            }
-        }
-  },
 
   runtimeConfig: {
     planshipApiClientSecret: process.env.PLANSHIP_API_CLIENT_SECRET || 'RJSazPD8NEM5PEzIl8JoXIRJNZm3uAhX',

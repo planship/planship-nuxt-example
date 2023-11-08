@@ -14,9 +14,6 @@ dependencies:
   '@pinia/nuxt':
     specifier: ^0.4.8
     version: 0.4.8(vue@3.3.4)
-  '@planship/axios':
-    specifier: ^0.0.1
-    version: 0.0.1
   '@planship/fetch':
     specifier: ^0.0.1
     version: 0.0.1
@@ -814,15 +811,6 @@ packages:
       - typescript
       - vue
 
-  /@planship/axios@0.0.1:
-    resolution: {integrity: sha512-Q3gFHwxN8R0cqOesSqKlTmS9DEi2JCN2rexen0XdTF7ypU7ri4nH16wjdOIOmMBJJcTWcGA22pPhJJaAXyZr7g==}
-    dependencies:
-      '@planship/models': 0.0.6
-      axios: 1.2.4
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
   /@planship/fetch@0.0.1:
     resolution: {integrity: sha512-HWbJOukdg2ogWm35ADXnsNZY1VdOovS7QbGI8YL6V14oFhU12xdOds4LAr81sO+pakir3pNLlc39vprl1k90vg==}
     dependencies:
@@ -1331,16 +1319,6 @@ packages:
       postcss: 8.4.31
       postcss-value-parser: 4.2.0
     dev: true
-
-  /axios@1.2.4:
-    resolution: {integrity: sha512-lIQuCfBJvZB/Bv7+RWUqEJqNShGOVpk9v7P0ZWx5Ip0qY6u7JBAU6dzQPMLasU9vHL2uD8av/1FDJXj7n6c39w==}
-    dependencies:
-      follow-redirects: 1.15.3
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-    dev: false
 
   /axios@1.5.1:
     resolution: {integrity: sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==}

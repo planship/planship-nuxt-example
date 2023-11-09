@@ -54,6 +54,4 @@ function generateClicks(count) {
   planshipStore.reportButtonClicks(count, props.project.name)
 }
 
-
-
 </script>

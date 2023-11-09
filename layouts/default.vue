@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-  import { usePlanshipStore }  from '@/stores/planship'
+  import { usePlanshipStore } from '@/stores/planship'
 
   const planshipStore = usePlanshipStore()
   await planshipStore.fetchAll()

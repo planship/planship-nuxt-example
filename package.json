@@ -11,7 +11,7 @@
   "devDependencies": {
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "autoprefixer": "^10.4.14",
-    "nuxt": "^3.3.3",
+    "nuxt": "^3.8.1",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.3.1"
   },
@@ -19,7 +19,7 @@
     "@headlessui/vue": "^1.7.13",
     "@heroicons/vue": "^2.0.17",
     "@pinia/nuxt": "^0.4.8",
-    "@planship/fetch": "^0.0.1",
+    "@planship/axios": "^0.0.2",
     "axios": "^1.5.1",
     "pinia": "^2.0.34"
   }

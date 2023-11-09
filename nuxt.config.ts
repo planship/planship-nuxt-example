@@ -3,6 +3,9 @@ export default defineNuxtConfig({
 	css: [
   	'@/assets/css/main.css',
 	],
+  experimental: {
+    renderJsonPayloads: false,
+  },
 
   postcss: {
     plugins: {

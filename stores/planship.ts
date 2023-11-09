@@ -3,9 +3,7 @@ import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/user'
 import { useProjectsStore } from '@/stores/projects'
 
-import { Planship } from '@planship/fetch'
-
-const userStore = useUserStore()
+import { Planship } from '@planship/axios'
 
 async function getAccessToken() {
   return useFetch('/api/planshipToken').then((response) => {
@@ -105,13 +103,14 @@ export const usePlanshipStore = defineStore('planship', {
     async fetchEntitlements(force: boolean = false) {
       if(!force && this.entitlementsDict && Object.keys(this.entitlementsDict).length)
         return
+      const userStore = useUserStore()
       this.entitlementsDict = await this.apiClient.getEntitlements(userStore.currentUser.email)
     },
 
     async fetchSubscriptions(force: boolean = false) {
       if(!force && this.subscriptions && this.subscriptions.length)
         return
-
+      const userStore = useUserStore()
       this.subscriptions = await this.apiClient.listSubscriptions(userStore.currentUser.email)
     },
 
@@ -131,6 +130,7 @@ export const usePlanshipStore = defineStore('planship', {
       if(!force && this.clickAnalytics && Object.keys(this.clickAnalytics).length)
         return
 
+      const userStore = useUserStore()
       this.clickAnalytics = await this.apiClient.getMeteringIdUsage(userStore.currentUser.email, 'button-click')
     },
 
@@ -142,6 +142,7 @@ export const usePlanshipStore = defineStore('planship', {
     },
 
     async modifySubscription(newPlanSlug: string) {
+      const userStore = useUserStore()
       await this.apiClient.modifySubscription(userStore.currentUser.email, this.defaultSubscription.subscriptionId, {
         planSlug: newPlanSlug,
         renewPlanSlug: newPlanSlug,
@@ -151,6 +152,7 @@ export const usePlanshipStore = defineStore('planship', {
     },
 
     async reportButtonClicks(count: number, projectName: string) {
+      const userStore = useUserStore()
       await this.apiClient.reportUsage(userStore.currentUser.email, 'button-click', count, projectName)
       await this.fetchEntitlements(true);
     },

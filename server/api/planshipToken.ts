@@ -1,4 +1,4 @@
-import { Planship, TokenResponse } from '@planship/axios'
+import { Planship, TokenResponse } from '@planship/fetch'
 
 export default defineEventHandler((event) => {
   const client = new Planship('clicker', useRuntimeConfig().public.serverPlanshipApiUrl, '973NYSQ4GQJZ8JBFKIOK', 'RJSazPD8NEM5PEzIl8JoXIRJNZm3uAhX')

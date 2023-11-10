@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/user'
 import { useProjectsStore } from '@/stores/projects'
 
-import { Planship } from '@planship/axios'
+import { Planship } from '@planship/fetch'
 
 async function getAccessToken() {
   return useFetch('/api/planshipToken').then((response) => {

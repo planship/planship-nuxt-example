@@ -15,10 +15,8 @@ RUN npm install -g pnpm@7
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml .npmrc .
+COPY . .
 
 RUN pnpm install --frozen-lockfile
-
-COPY app ./app
 
 CMD ["pnpm", "run", "dev"]

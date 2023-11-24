@@ -1,20 +1,20 @@
 <template>
-  <div data-title="Dieser Link führt zu Google" class="flex flex-auto items-center gap-x-4 tooltip-wrapper">
+  <div class="project">
     <div v-if="project.type=='Single'" >
       <button
         @click="generateClicks(1)"
-        class="inline-flex w-auto justify-center rounded-md px-4 py-2 text-sm font-medium text-white "
+        class="clicker-btn"
         :disabled="! canGenerateButtonClick"
-        :class="canGenerateButtonClick ? 'bg-blue-600 bg-opacity-60 hover:bg-opacity-90' : 'bg-gray-400'">
+        :class="canGenerateButtonClick ? 'clicking-enabled' : 'clicking-disabled'">
         Generate single click<span class="ml-1" v-if="!canGenerateButtonClick">(No more clicks left)</span>
       </button>
     </div>
     <div v-if="project.type=='Random'">
       <button
         @click="generateClicks(Math.floor(Math.random() * 4) + 1)"
-        class="inline-flex w-auto justify-center rounded-md px-4 py-2 text-sm font-medium text-white "
+        class="clicker-btn"
         :disabled="! canGenerateButtonClick"
-        :class="canGenerateButtonClick ? 'bg-blue-600 bg-opacity-60 hover:bg-opacity-90' : 'bg-gray-400'"
+        :class="canGenerateButtonClick ? 'clicking-enabled' : 'clicking-disabled'"
       >
         Generate random clicks<span class="ml-1" v-if="!canGenerateButtonClick">(No more clicks left)</span>
       </button>
@@ -24,8 +24,8 @@
       <button
         @click="generateClicks(batchClicks)"
         :disabled="! canGenerateButtonClick"
-        class="inline-flex w-auto justify-center rounded-md ml-4 px-4 py-2 text-sm font-medium text-white"
-        :class="canGenerateButtonClick ? 'bg-blue-600 bg-opacity-60 hover:bg-opacity-90' : 'bg-gray-400'"
+        class="clicker-btn"
+        :class="canGenerateButtonClick ? 'clicking-enabled' : 'clicking-disabled'"
       >
         Generate {{ batchClicks }} clicks<span class="ml-1" v-if="!canGenerateButtonClick">(No more clicks left)</span>
       </button>
@@ -55,3 +55,21 @@ function generateClicks(count) {
 }
 
 </script>
+
+<style lang="postcss">
+.clicker-btn {
+  @apply inline-flex w-auto justify-center rounded-md px-4 py-2 text-sm font-medium text-white;
+}
+
+.clicking-enabled {
+  @apply bg-blue-600 bg-opacity-60 hover:bg-opacity-90
+}
+
+.clicking-disabled {
+  @apply bg-gray-400
+}
+
+.project {
+  @apply flex flex-auto items-center gap-x-4
+}
+</style>

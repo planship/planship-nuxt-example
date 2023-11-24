@@ -1,10 +1,10 @@
 <template>
   <div class="px-4">
-    <ul role="list" >
-      <li v-for="project in projects" :key="project.slug" class="flex justify-between gap-x-6 py-7 px-4 my-3 border">
+    <ul class="project-list" role="list" >
+      <li v-for="project in projects" :key="project.slug">
         <div class="flex-none w-32">
-          <p class="text-sm font-semibold leading-6 text-gray-900">{{ project.name }}</p>
-          <p class="mt-1 truncate text-xs leading-5 text-gray-500">Type: {{ project.type }}</p>
+          <p class="project-name">{{ project.name }}</p>
+          <p class="project-type">Type: {{ project.type }}</p>
         </div>
         <ProjectButtons :project="project" />
         <div class="w-64">
@@ -136,3 +136,17 @@ function deleteProject(slug) {
 
 
 </script>
+
+<style lang="postcss">
+.project-name {
+  @apply text-sm font-semibold leading-6 text-gray-900;
+}
+
+.project-type {
+  @apply mt-1 truncate text-xs leading-5 text-gray-500;
+}
+
+.project-list li {
+  @apply flex justify-between gap-x-6 py-7 px-4 my-3 border
+}
+</style>

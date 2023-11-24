@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, skipHydrate } from 'pinia'
 
 import { useUserStore } from '@/stores/user'
 import { useProjectsStore } from '@/stores/projects'
@@ -6,9 +6,7 @@ import { useProjectsStore } from '@/stores/projects'
 import { Planship } from '@planship/fetch'
 
 async function getAccessToken() {
-  return useFetch('/api/planshipToken').then((response) => {
-    return response.data.value
-  })
+  return fetch('/api/planshipToken').then((response) => response.text())
 }
 
 function getApiUrl() {
@@ -61,100 +59,113 @@ export class Entitlements {
   }
 }
 
-export const usePlanshipStore = defineStore('planship', {
-  state: () => ({
-    subscriptions: [],
-    entitlementsDict: {},
-    plans: [],
-    clickAnalytics: {},
-    apiClient: createServerApiClient(),
-  }),
+export const usePlanshipStore = defineStore('planship', () => {
 
-  hydrate(state, initialState) {
-    // reacreate the Planship API client one the client side
-    state.apiClient = createBrowserApiClient()
-  },
+    const subscriptions = ref([])
+    const entitlementsDict = ref({})
+    const plans = ref([])
+    const clickAnalytics = ref({})
 
-  getters: {
-    defaultSubscription: (state) => state.subscriptions.length > 0 ? state.subscriptions[0] : undefined,
 
-    entitlements: (state) => new Entitlements(state.entitlementsDict),
+    const userStore = useUserStore()
+    const projectsStore = useProjectsStore()
+    const { ssrContext } = useNuxtApp();
+    const apiClient = ssrContext ? createServerApiClient() : createBrowserApiClient();
 
-    currentPlanSlug: function () {
+    const defaultSubscription = computed(() => subscriptions.value.length > 0 ? subscriptions.value[0] : undefined)
 
-      return this.defaultSubscription ? this.defaultSubscription.plan.slug : ''
-    },
+    const entitlements = computed(() => new Entitlements(entitlementsDict.value))
 
-    currentPlanName: function () {
-      return this.defaultSubscription ? this.defaultSubscription.plan.name : ''
-    },
+    const currentPlanSlug = computed(() => {
+      return defaultSubscription.value ? defaultSubscription.value.plan.slug : ''
+    })
 
-    canCreateProject: (state) => {
-      const projectsStore = useProjectsStore()
-      return state.entitlements.maxProjects > projectsStore.projects.length
-    },
+    const currentPlanName = computed(() => defaultSubscription.value ? defaultSubscription.value.plan.name : '')
 
-    canGenerateButtonClick: (state) => {
-      return state.entitlements.subscriptionButtonClicks > 0
-    },
-  },
-  actions: {
+    const canCreateProject = computed(() => {
+      return entitlements.value.maxProjects > projectsStore.projects.length
+    })
 
-    async fetchEntitlements(force: boolean = false) {
-      if(!force && this.entitlementsDict && Object.keys(this.entitlementsDict).length)
-        return
-      const userStore = useUserStore()
-      this.entitlementsDict = await this.apiClient.getEntitlements(userStore.currentUser.email)
-    },
+    const canGenerateButtonClick = computed(() => entitlements.value.subscriptionButtonClicks > 0)
 
-    async fetchSubscriptions(force: boolean = false) {
-      if(!force && this.subscriptions && this.subscriptions.length)
-        return
-      const userStore = useUserStore()
-      this.subscriptions = await this.apiClient.listSubscriptions(userStore.currentUser.email)
-    },
+    function updateEntitlementsCb(entitlements) {
+      entitlementsDict.value = entitlements
+    }
 
-    async fetchPlans(force: boolean = false) {
-      if(!force && this.plans && this.plans.length)
+    async function fetchEntitlements(force: boolean = false) {
+
+      if(!force && entitlementsDict.value && Object.keys(entitlementsDict.value).length)
         return
 
-      const plans = await this.apiClient.listPlans()
-      this.plans = await Promise.all(plans.map(async ({slug}) => {
-        const plan = await this.apiClient.getPlan(slug)
+      entitlementsDict.value = await apiClient.getEntitlements(userStore.currentUser.email, updateEntitlementsCb)
+    }
+
+    async function fetchSubscriptions(force: boolean = false) {
+      if(!force && subscriptions.value && subscriptions.value.length)
+        return
+      subscriptions.value = await apiClient.listSubscriptions(userStore.currentUser.email)
+    }
+
+    async function fetchPlans(force: boolean = false) {
+      if(!force && plans.value && plans.value.length)
+        return
+
+      const planList = await apiClient.listPlans()
+      plans.value = await Promise.all(planList.map(async ({slug}) => {
+        const plan = await apiClient.getPlan(slug)
         plan.entitlements.sort((a, b) => (a.order-b.order))
         return plan
       }))
-    },
+    }
 
-    async fetchClickAnalytics(force: boolean = false) {
-      if(!force && this.clickAnalytics && Object.keys(this.clickAnalytics).length)
+    async function fetchClickAnalytics(force: boolean = false) {
+      if(!force && clickAnalytics.value && Object.keys(clickAnalytics.value).length)
         return
 
-      const userStore = useUserStore()
-      this.clickAnalytics = await this.apiClient.getMeteringIdUsage(userStore.currentUser.email, 'button-click')
-    },
+      clickAnalytics.value = await apiClient.getMeteringIdUsage(userStore.currentUser.email, 'button-click')
+    }
 
-    async fetchAll() {
-      await this.fetchEntitlements();
-      await this.fetchSubscriptions();
-      await this.fetchPlans();
-      await this.fetchClickAnalytics();
-    },
+    async function fetchAll() {
+      await fetchEntitlements(true);
+      await fetchSubscriptions();
+      await fetchPlans();
+      await fetchClickAnalytics();
+    }
 
-    async modifySubscription(newPlanSlug: string) {
-      const userStore = useUserStore()
-      await this.apiClient.modifySubscription(userStore.currentUser.email, this.defaultSubscription.subscriptionId, {
+    async function modifySubscription(newPlanSlug: string) {
+      await apiClient.modifySubscription(userStore.currentUser.email, defaultSubscription.value.subscriptionId, {
         planSlug: newPlanSlug,
         renewPlanSlug: newPlanSlug,
       })
-      await this.fetchSubscriptions(true);
-      await this.fetchEntitlements(true);
-    },
+      await fetchSubscriptions(true);
+      await fetchEntitlements(true);
+    }
 
-    async reportButtonClicks(count: number, projectName: string) {
-      const userStore = useUserStore()
-      await this.apiClient.reportUsage(userStore.currentUser.email, 'button-click', count, projectName)
-      await this.fetchEntitlements(true);
-    },
-  },
+    async function reportButtonClicks(count: number, projectName: string) {
+      await apiClient.reportUsage(userStore.currentUser.email, 'button-click', count, projectName)
+      await fetchEntitlements(true);
+    }
+
+    return {
+      subscriptions,
+      entitlementsDict,
+      plans,
+      clickAnalytics,
+      defaultSubscription,
+      entitlements,
+      currentPlanSlug,
+      currentPlanName,
+      canCreateProject,
+      canGenerateButtonClick,
+      reportButtonClicks,
+      fetchAll,
+      fetchEntitlements,
+      fetchSubscriptions,
+      fetchPlans,
+      fetchClickAnalytics,
+      modifySubscription,
+      apiClient: skipHydrate(apiClient)
+    }
+
+
 })

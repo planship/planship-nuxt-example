@@ -15,8 +15,8 @@ dependencies:
     specifier: ^0.4.8
     version: 0.4.8(vue@3.3.8)
   '@planship/fetch':
-    specifier: ^0.0.4
-    version: 0.0.4
+    specifier: ^0.0.6
+    version: 0.0.6
   pinia:
     specifier: ^2.0.34
     version: 2.0.34(vue@3.3.8)
@@ -1665,8 +1665,8 @@ packages:
     dev: true
     optional: true
 
-  /@planship/fetch@0.0.4:
-    resolution: {integrity: sha512-bkiOsJdVPV9dc4qUqEKLgYDiwzi3TfxuEgnl6Yzt9N8tfHh5VzB3PGJyYIHhX+pKGdM9AlFXgzyHjA02oEl61g==}
+  /@planship/fetch@0.0.6:
+    resolution: {integrity: sha512-S4oR6aH+fzfwy6itTzB5Ywd62bf9009I2S4rbf4FMPjpGBghzRddg6f46Z3Qvm3oc9lCAg360G93bZGGkaTOYg==}
     dependencies:
       '@planship/models': 0.0.9
     dev: false

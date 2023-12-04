@@ -10,7 +10,7 @@ async function getAccessToken() {
 }
 
 function getApiUrl() {
-  return typeof window === "undefined" ? useRuntimeConfig().public.serverPlanshipApiUrl : useRuntimeConfig().public.clientPlanshipApiUrl
+  return typeof window === 'undefined' ? useRuntimeConfig().public.serverPlanshipApiUrl : useRuntimeConfig().public.clientPlanshipApiUrl
 }
 
 function createServerApiClient() {
@@ -31,11 +31,12 @@ function createBrowserApiClient() {
 export class Entitlements {
 
   private entitlementsDict: {} = {
-    "subscription-button-clicks": 5,
-    "max-projects": 1,
-    "premium-button": false,
-    "analytics-panel": false,
-    "project-types": [ "Single" ]
+    'subscription-button-clicks': 5,
+    'button-clicks-per-minute': 1,
+    'max-projects': 1,
+    'premium-button': false,
+    'analytics-panel': false,
+    'project-types': [ 'Single' ]
   }
 
 
@@ -46,6 +47,10 @@ export class Entitlements {
 
   get subscriptionButtonClicks(): number {
     return this.entitlementsDict['subscription-button-clicks']
+  }
+
+  get buttonClicksPerMinute(): number {
+    return this.entitlementsDict['button-clicks-per-minute']
   }
 
   get maxProjects(): number {
@@ -92,7 +97,7 @@ export const usePlanshipStore = defineStore('planship', () => {
       return entitlements.value.maxProjects > projectsStore.projects.length
     })
 
-    const canGenerateButtonClick = computed(() => entitlements.value.subscriptionButtonClicks > 0)
+    const canGenerateButtonClick = computed(() => entitlements.value.subscriptionButtonClicks > 0 && entitlements.value.buttonClicksPerMinute > 0)
 
     function updateEntitlementsCb(entitlements) {
       entitlementsDict.value = entitlements
@@ -152,16 +157,21 @@ export const usePlanshipStore = defineStore('planship', () => {
     }
 
     return {
+      // state
       subscriptions,
       entitlementsDict,
       plans,
       clickAnalytics,
+
+      // getters
       defaultSubscription,
       entitlements,
       currentPlanSlug,
       currentPlanName,
       canCreateProject,
       canGenerateButtonClick,
+
+      // actions
       reportButtonClicks,
       fetchAll,
       fetchEntitlements,

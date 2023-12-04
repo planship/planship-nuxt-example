@@ -24,7 +24,8 @@
         <div class="hidden md:block">
           <div class="ml-4 flex items-center md:ml-6">
             <!-- Profile dropdown -->
-            <div class="ml-4 flex items-center md:ml-6 nav-caption">Clicks left: {{ entitlements.subscriptionButtonClicks }}</div>
+            <div class="ml-4 flex items-center md:ml-6 nav-caption">Subscription clicks left: {{ entitlements.subscriptionButtonClicks }}</div>
+            <div class="ml-4 flex items-center md:ml-6 nav-caption">Clicks left this minute: {{ entitlements.buttonClicksPerMinute }}</div>
             <NuxtLink to="/subscription" class="nav-link" aria-current="undefined">Current plan: {{ currentPlanName }} </NuxtLink>
             <Menu as="div" class="relative ml-3">
               <div>

@@ -8,7 +8,7 @@ export type UserState = {
 
 
 export const useUserStore = defineStore('user', {
-  state: () => ({ 
+  state: () => ({
     currentUser: {
       name: 'Darth Vader',
       slug: 'darth-vader',

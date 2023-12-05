@@ -71,9 +71,7 @@ import { usePlanshipStore }  from '@/stores/planship'
 import { storeToRefs } from 'pinia'
 
 
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 
 
 const projectsStore = useProjectsStore()
@@ -87,12 +85,6 @@ const { currentProject, projects }  = storeToRefs(projectsStore)
 const planshipStore = usePlanshipStore()
 
 const { currentPlanName, entitlements } = storeToRefs(planshipStore)
-
-function navigateToProject(slug) {
-  projectsStore.setCurrentProject(slug)
-  navigateTo("/" + slug)
-}
-
 
 </script>
 

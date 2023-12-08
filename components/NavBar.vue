@@ -74,17 +74,19 @@ import { storeToRefs } from 'pinia'
 import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 
 
-const projectsStore = useProjectsStore()
-const { currentUser } = storeToRefs(useUserStore())
-const route = useRoute()
-if (route.params.project) {
-  projectsStore.setCurrentProject(route.params.project)
-}
-const { currentProject, projects }  = storeToRefs(projectsStore)
+const { currentUser, users } = storeToRefs(useUserStore())
 
 const planshipStore = usePlanshipStore()
 
 const { currentPlanName, entitlements } = storeToRefs(planshipStore)
+
+function setCreateDialogOpen(value) {
+  isOpen.value = value
+}
+
+if (!currentUser) {
+  setCreateDialogOpen(true)
+}
 
 </script>
 

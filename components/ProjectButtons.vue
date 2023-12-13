@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { Project } from '@/models/project'
+import type { Project } from '@/models/project'
 import { usePlanshipStore } from '@/stores/planship'
 import { storeToRefs } from 'pinia'
 const props =  defineProps<{

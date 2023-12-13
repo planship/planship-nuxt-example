@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import { User } from '@/models/user'
+import type { User } from '@/models/user'
 
 export type UserState = {
   currentUser?: User;

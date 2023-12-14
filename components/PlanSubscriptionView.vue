@@ -56,7 +56,9 @@
                     v-for="entitlement in plan.entitlements"
                     :key="entitlement.name"
                     :value="entitlement.name"
-                    role="list" class="mb-1 space-y-1 text-left" :class="checked ? 'text-white' : 'text-gray-900'"
+                    role="list"
+                    class="mb-1 space-y-1 text-left"
+                    :class="checked ? 'text-white' : 'text-gray-900'"
                   >
                     <li class="flex items-center space-x-2">
                         <span v-html="entitlement.name" />
@@ -71,9 +73,9 @@
     </RadioGroup>
     <div class="flex mt-10 justify-end">
       <button
-        class="rounded-md px-10 py-3 text-med text-white font-medium"
+        class="rounded-md px-10 py-3 text-base text-white font-medium"
         :class="currentPlanSlug != planSelection ? 'bg-green-500 hover:bg-opacity-90': 'bg-gray-400'"
-        :disabled="currentPlanSlug == planSelection"
+        :disabled="currentPlanSlug === planSelection"
         @click="modifySubscription(planSelection)"
       >
         Change subscription

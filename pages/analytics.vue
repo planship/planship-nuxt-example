@@ -1,6 +1,9 @@
 <template>
-  <div class="flex flex-col pt-20">
-    <b class="text-center text-2xl">Clicks this month: {{ clickAnalytics }}</b>
+  <div class="px-4">
+    <h1 class="font-bold text-xl mb-2 mt-2">
+      Clicks this month
+    </h1>
+    <pre>{{clickAnalytics}}</pre>
   </div>
 </template>
 

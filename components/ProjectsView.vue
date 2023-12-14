@@ -20,7 +20,7 @@
     </ul>
     <div class="flex py-2 justify-stretch">
       <button
-        class="w-full rounded-md px-3 py-3 text-med text-white font-medium "
+        class="w-full rounded-md px-3 py-3 text-base text-white font-medium "
         :disabled="! canCreateProject"
         :class="canCreateProject ? 'bg-green-500 hover:bg-opacity-90' : 'bg-gray-400'"
         @click="setCreateDialogOpen(true)"

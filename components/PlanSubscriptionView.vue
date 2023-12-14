@@ -1,14 +1,36 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+
+import {
+  RadioGroup,
+  RadioGroupDescription,
+  RadioGroupLabel,
+  RadioGroupOption,
+} from '@headlessui/vue'
+import { usePlanshipStore } from '@/stores/planship'
+
+const planshipStore = usePlanshipStore()
+
+const { modifySubscription } = planshipStore
+
+const { currentPlanSlug, plans } = storeToRefs(planshipStore)
+const planSelection = ref(planshipStore.currentPlanSlug)
+</script>
+
 <template>
   <div class="px-16 py-8">
     <RadioGroup v-model="planSelection">
-      <RadioGroupLabel class="sr-only">Plan</RadioGroupLabel>
+      <RadioGroupLabel class="sr-only">
+        Plan
+      </RadioGroupLabel>
       <div class="flex justify-between gap-x-6 lg:grid lg:grid-cols-3">
         <RadioGroupOption
-          as="template"
           v-for="plan in plans"
           :key="plan.slug"
-          :value="plan.slug"
           v-slot="{ active, checked }"
+          as="template"
+          :value="plan.slug"
         >
           <div
             :class="[
@@ -51,7 +73,9 @@
                   :class="checked ? 'text-sky-100' : 'text-gray-500'"
                   class="inline"
                 >
-                  <p class="font-light my-4">{{ plan.description }}</p>
+                  <p class="font-light my-4">
+                    {{ plan.description }}
+                  </p>
                   <ul
                     v-for="entitlement in plan.entitlements"
                     :key="entitlement.name"
@@ -61,7 +85,7 @@
                     :class="checked ? 'text-white' : 'text-gray-900'"
                   >
                     <li class="flex items-center space-x-2">
-                        <span v-html="entitlement.name" />
+                      <span v-html="entitlement.name" />
                     </li>
                   </ul>
                 </RadioGroupDescription>
@@ -74,7 +98,7 @@
     <div class="flex mt-10 justify-end">
       <button
         class="rounded-md px-10 py-3 text-base text-white font-medium"
-        :class="currentPlanSlug != planSelection ? 'bg-green-500 hover:bg-opacity-90': 'bg-gray-400'"
+        :class="currentPlanSlug !== planSelection ? 'bg-green-500 hover:bg-opacity-90' : 'bg-gray-400'"
         :disabled="currentPlanSlug === planSelection"
         @click="modifySubscription(planSelection)"
       >
@@ -83,24 +107,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import { usePlanshipStore } from '@/stores/planship'
-import { storeToRefs } from 'pinia'
-
-import {
-  RadioGroup,
-  RadioGroupLabel,
-  RadioGroupDescription,
-  RadioGroupOption,
-} from '@headlessui/vue'
-
-const planshipStore = usePlanshipStore()
-
-const { modifySubscription } = planshipStore
-
-const { currentPlanSlug, plans } = storeToRefs(planshipStore)
-const planSelection = ref(planshipStore.currentPlanSlug)
-
-</script>

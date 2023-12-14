@@ -1,6 +1,6 @@
+<script setup>
+</script>
+
 <template>
   <PlanSubscriptionView />
 </template>
-
-<script setup>
-</script>

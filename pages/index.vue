@@ -1,6 +1,6 @@
+<script setup>
+</script>
+
 <template>
   <ProjectsView />
 </template>
-
-<script setup>
-</script>

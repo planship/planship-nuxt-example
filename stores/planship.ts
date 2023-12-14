@@ -1,12 +1,11 @@
 import { defineStore, skipHydrate } from 'pinia'
 
+import { Planship } from '@planship/fetch'
 import { useUserStore } from '@/stores/user'
 import { useProjectsStore } from '@/stores/projects'
 
-import { Planship, type JSONValue } from '@planship/fetch'
-
 async function getAccessToken() {
-  return fetch('/api/planshipToken').then((response) => response.text())
+  return fetch('/api/planshipToken').then(response => response.text())
 }
 
 function createServerApiClient() {
@@ -14,7 +13,7 @@ function createServerApiClient() {
   return new Planship(
     'clicker-demo',
     useRuntimeConfig().public.serverPlanshipApiUrl,
-    useRuntimeConfig().public.planshipApiClientId ,
+    useRuntimeConfig().public.planshipApiClientId,
     useRuntimeConfig().planshipApiClientSecret,
     useRuntimeConfig().public.webSocketUrl,
   )
@@ -25,24 +24,23 @@ function createBrowserApiClient() {
     'clicker-demo',
     useRuntimeConfig().public.clientPlanshipApiUrl,
     getAccessToken,
-    useRuntimeConfig().public.webSocketUrl)
+    useRuntimeConfig().public.webSocketUrl,
+  )
 }
 
 export class Entitlements {
-
-  private entitlementsDict: {[key: string]: string | number | boolean | string[]} = {
+  private entitlementsDict: { [key: string]: string | number | boolean | string[] } = {
     'subscription-button-clicks': 0,
     'button-clicks-per-minute': 0,
     'max-projects': 0,
     'premium-button': false,
     'analytics-panel': false,
-    'project-types': [ 'Single' ]
+    'project-types': ['Single'],
   }
-
 
   constructor(entitlementsDict?: {}) {
     if (entitlementsDict)
-      this.entitlementsDict = entitlementsDict;
+      this.entitlementsDict = entitlementsDict
   }
 
   get subscriptionButtonClicks(): number {
@@ -71,174 +69,173 @@ export class Entitlements {
 }
 
 export const usePlanshipStore = defineStore('planship', () => {
+  const subscriptions = ref([])
+  const entitlementsDict = ref({})
+  const plans = ref([])
+  const clickAnalytics = ref({})
+  const currentUser = ref({})
 
-    const subscriptions = ref([])
-    const entitlementsDict = ref({})
-    const plans = ref([])
-    const clickAnalytics = ref({})
-    const currentUser = ref({})
+  const userStore = useUserStore()
+  const projectsStore = useProjectsStore()
+  const { ssrContext } = useNuxtApp()
+  const apiClient = ssrContext ? createServerApiClient() : createBrowserApiClient()
 
+  const defaultSubscription = computed(() => subscriptions.value?.[0])
 
-    const userStore = useUserStore()
-    const projectsStore = useProjectsStore()
-    const { ssrContext } = useNuxtApp();
-    const apiClient = ssrContext ? createServerApiClient() : createBrowserApiClient();
+  const entitlements = computed(() => new Entitlements(entitlementsDict.value))
 
-    const defaultSubscription = computed(() => subscriptions.value?.[0])
+  const currentPlanSlug = computed(() => {
+    return defaultSubscription.value?.plan.slug
+  })
 
-    const entitlements = computed(() => new Entitlements(entitlementsDict.value))
+  const currentPlanName = computed(() => defaultSubscription.value?.plan.name)
 
-    const currentPlanSlug = computed(() => {
-      return defaultSubscription.value?.plan.slug
-    })
+  const canCreateProject = computed(() => {
+    return entitlements.value.maxProjects > projectsStore.projects.length
+  })
 
-    const currentPlanName = computed(() => defaultSubscription.value?.plan.name)
+  const canGenerateButtonClick = computed(() => entitlements.value.subscriptionButtonClicks > 0 && entitlements.value.buttonClicksPerMinute > 0)
 
-    const canCreateProject = computed(() => {
-      return entitlements.value.maxProjects > projectsStore.projects.length
-    })
+  function updateEntitlementsCb(entitlements) {
+    entitlementsDict.value = entitlements
+  }
 
-    const canGenerateButtonClick = computed(() => entitlements.value.subscriptionButtonClicks > 0 && entitlements.value.buttonClicksPerMinute > 0)
+  async function fetchCurrentUser(force: boolean = false) {
+    if (!force && currentUser.value?.email)
+      return
 
-    function updateEntitlementsCb(entitlements) {
-      entitlementsDict.value = entitlements
-    }
-
-    async function fetchCurrentUser(force: boolean = false) {
-      if(!force && currentUser.value?.email)
-        return
-
+    try {
+      let user
       try {
-        let user = undefined
-        try {
-          user = await apiClient.getCustomer(userStore.currentUser.email)
-        } catch(error) {
-          // If the API response error is different from 404 (customer not found), rethrow it
-          if (error.response.status != 404) {
-            throw error
-          }
-        }
+        user = await apiClient.getCustomer(userStore.currentUser.email)
+      }
+      catch (error) {
+        // If the API response error is different from 404 (customer not found), rethrow it
+        if (error.response.status !== 404)
+          throw error
+      }
 
-        if (!user) {
-          // Customer doesn't exist in Planship. register them
-          const user = await apiClient.createCustomer({alternativeId: userStore.currentUser.email})
-          await apiClient.createSubscription(user.id, 'personal')
-        }
-        currentUser.value = user
-      } catch(error) {
-        // Handle Plaship API errors here
+      if (!user) {
+        // Customer doesn't exist in Planship. register them
+        const user = await apiClient.createCustomer({ alternativeId: userStore.currentUser.email })
+        await apiClient.createSubscription(user.id, 'personal')
+      }
+      currentUser.value = user
+    }
+    catch (error) {
+      // Handle Plaship API errors here
+      console.dir(error.response)
+    }
+  }
+
+  async function fetchEntitlements(force: boolean = false) {
+    if (!force && Object.keys(entitlementsDict.value).length)
+      return
+
+    try {
+      const entitlements = await apiClient.getEntitlements(userStore.currentUser.email, updateEntitlementsCb)
+      if (entitlements)
+        entitlementsDict.value = entitlements
+    }
+    catch (error) {
+      console.dir(error.response)
+    }
+  }
+
+  async function fetchSubscriptions(force: boolean = false) {
+    if (!force && subscriptions.value?.length)
+      return
+
+    if (currentUser.value) {
+      try {
+        subscriptions.value = await apiClient.listSubscriptions(currentUser.value.id)
+      }
+      catch (error) {
         console.dir(error.response)
       }
     }
+  }
 
-    async function fetchEntitlements(force: boolean = false) {
-      if(!force && Object.keys(entitlementsDict.value).length)
-        return
+  async function fetchPlans(force: boolean = false) {
+    if (!force && plans.value?.length)
+      return
 
+    const planList = await apiClient.listPlans()
+    plans.value = await Promise.all(planList.map(async ({ slug }) => {
+      const plan = await apiClient.getPlan(slug)
+      plan.entitlements.sort((a, b) => (a.order - b.order))
+      return plan
+    }))
+  }
+
+  async function fetchClickAnalytics(force: boolean = false) {
+    if (!force && Object.keys(clickAnalytics.value).length)
+      return
+
+    if (currentUser.value) {
       try {
-        const entitlements = await apiClient.getEntitlements(userStore.currentUser.email, updateEntitlementsCb)
-        if (entitlements) {
-          entitlementsDict.value = entitlements
-        }
-      } catch(error) {
+        clickAnalytics.value = await apiClient.getMeteringIdUsage(currentUser.value.id, 'button-click')
+      }
+      catch (error) {
         console.dir(error.response)
       }
     }
+  }
 
-    async function fetchSubscriptions(force: boolean = false) {
-      if(!force && subscriptions.value?.length)
-        return
+  async function fetchAll(force: boolean = false) {
+    return fetchCurrentUser().then(async () => {
+      await Promise.all([
+        fetchEntitlements(true),
+        fetchSubscriptions(force),
+        fetchPlans(force),
+        fetchClickAnalytics(force),
+      ])
+    })
+  }
 
-      if (currentUser.value) {
-        try{
-          subscriptions.value = await apiClient.listSubscriptions(currentUser.value.id)
-        } catch(error) {
-          console.dir(error.response)
-        }
-      }
-    }
-
-    async function fetchPlans(force: boolean = false) {
-      if(!force && plans.value?.length)
-        return
-
-      const planList = await apiClient.listPlans()
-      plans.value = await Promise.all(planList.map(async ({slug}) => {
-        const plan = await apiClient.getPlan(slug)
-        plan.entitlements.sort((a, b) => (a.order-b.order))
-        return plan
-      }))
-    }
-
-    async function fetchClickAnalytics(force: boolean = false) {
-      if(!force && Object.keys(clickAnalytics.value).length)
-        return
-
-      if (currentUser.value) {
-        try {
-          clickAnalytics.value = await apiClient.getMeteringIdUsage(currentUser.value.id, 'button-click')
-        } catch(error) {
-          console.dir(error.response)
-        }
-      }
-    }
-
-
-    async function fetchAll(force: boolean = false) {
-      return fetchCurrentUser().then(async () => {
-        await Promise.all([
-          fetchEntitlements(true),
-          fetchSubscriptions(force),
-          fetchPlans(force),
-          fetchClickAnalytics(force),
-        ])
+  async function modifySubscription(newPlanSlug: string) {
+    if (defaultSubscription.value?.subscriptionId) {
+      await apiClient.modifySubscription(userStore.currentUser.email, defaultSubscription.value.subscriptionId, {
+        planSlug: newPlanSlug,
+        renewPlanSlug:
+          newPlanSlug,
       })
     }
-
-    async function modifySubscription(newPlanSlug: string) {
-      if (defaultSubscription.value?.subscriptionId) {
-        await apiClient.modifySubscription(userStore.currentUser.email, defaultSubscription.value.subscriptionId, {
-          planSlug: newPlanSlug,
-          renewPlanSlug:
-          newPlanSlug,
-        })
-      } else {
-        await apiClient.createSubscription(userStore.currentUser.email, newPlanSlug)
-      }
-
-      await Promise.all([fetchSubscriptions(true), fetchEntitlements(true)]);
+    else {
+      await apiClient.createSubscription(userStore.currentUser.email, newPlanSlug)
     }
 
-    async function reportButtonClicks(count: number, projectName: string) {
-      await apiClient.reportUsage(currentUser.value.id, 'button-click', count, projectName)
-    }
+    await Promise.all([fetchSubscriptions(true), fetchEntitlements(true)])
+  }
 
-    return {
-      // state
-      subscriptions,
-      entitlementsDict,
-      plans,
-      clickAnalytics,
-      currentUser,
+  async function reportButtonClicks(count: number, projectName: string) {
+    await apiClient.reportUsage(currentUser.value.id, 'button-click', count, projectName)
+  }
 
-      // getters
-      defaultSubscription,
-      entitlements,
-      currentPlanSlug,
-      currentPlanName,
-      canCreateProject,
-      canGenerateButtonClick,
+  return {
+    // state
+    subscriptions,
+    entitlementsDict,
+    plans,
+    clickAnalytics,
+    currentUser,
 
-      // actions
-      reportButtonClicks,
-      fetchAll,
-      fetchEntitlements,
-      fetchSubscriptions,
-      fetchPlans,
-      fetchClickAnalytics,
-      modifySubscription,
-      apiClient: skipHydrate(apiClient)
-    }
+    // getters
+    defaultSubscription,
+    entitlements,
+    currentPlanSlug,
+    currentPlanName,
+    canCreateProject,
+    canGenerateButtonClick,
 
-
+    // actions
+    reportButtonClicks,
+    fetchAll,
+    fetchEntitlements,
+    fetchSubscriptions,
+    fetchPlans,
+    fetchClickAnalytics,
+    modifySubscription,
+    apiClient: skipHydrate(apiClient),
+  }
 })

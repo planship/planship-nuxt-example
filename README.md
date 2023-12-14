@@ -2,7 +2,6 @@
 
 Welcome to the [Planship](https://docs.planship.io) demo app built with [Nuxt 3](https://nuxt.com) that uses [Pinia](https://pinia.vuejs.org/). This app demonstrates the use of Planship for implementing subscription plans with feature and usage-based entitlements.
 
-
 ## What is the Clicker Demo app?
 
 Clicker Demo is a hypothetical app that provides its customers with a few simple features, most notably buttons that can be clicked to generate _clicks_. The app offers three subscription plans, *Small*, *Medium* and *Large*, that provide access to different features and limits on the number of allowed _clicks_.

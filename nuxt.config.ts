@@ -1,8 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-	css: [
-  	'@/assets/css/main.css',
-	],
+  css: [
+    '@/assets/css/main.css',
+  ],
   experimental: {
     renderJsonPayloads: false,
   },
@@ -15,8 +15,8 @@ export default defineNuxtConfig({
   },
 
   modules: [
-  	'@pinia/nuxt',
-  	'@pinia-plugin-persistedstate/nuxt',
+    '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
   ],
 
   runtimeConfig: {
@@ -28,5 +28,5 @@ export default defineNuxtConfig({
       serverPlanshipApiUrl: process.env.PLANSHIP_API_SERVER_URL || 'https://api.planship.io',
       webSocketUrl: process.env.WEBSOCKET_URL || undefined,
     },
-  }
+  },
 })

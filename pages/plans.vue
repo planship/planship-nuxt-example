@@ -1,6 +1,6 @@
+<script setup>
+</script>
+
 <template>
   <PlansView />
 </template>
-
-<script setup>
-</script>

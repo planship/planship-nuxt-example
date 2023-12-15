@@ -22,7 +22,7 @@ export const useUserStore = defineStore('user', {
   actions: {
     setUserId(id: string) {
       this.currentUser.id = id
-    }
+    },
   },
   persist: true,
 })

@@ -101,13 +101,13 @@ export const usePlanshipStore = defineStore('planship', () => {
   }
 
   async function fetchCurrentUser(force: boolean = false) {
-    if (!force && currentUser.value?.email)
+    if (!force && currentUser.value?.id)
       return
 
     try {
       let user
       try {
-        user = await apiClient.getCustomer(userStore.currentUser.email)
+        user = await apiClient.getCustomer(userStore.currentUser.id)
       }
       catch (error) {
         // If the API response error is different from 404 (customer not found), rethrow it
@@ -133,7 +133,7 @@ export const usePlanshipStore = defineStore('planship', () => {
       return
 
     try {
-      const entitlements = await apiClient.getEntitlements(userStore.currentUser.email, updateEntitlementsCb)
+      const entitlements = await apiClient.getEntitlements(userStore.currentUser.id, updateEntitlementsCb)
       if (entitlements)
         entitlementsDict.value = entitlements
     }
@@ -195,14 +195,14 @@ export const usePlanshipStore = defineStore('planship', () => {
 
   async function modifySubscription(newPlanSlug: string) {
     if (defaultSubscription.value?.subscriptionId) {
-      await apiClient.modifySubscription(userStore.currentUser.email, defaultSubscription.value.subscriptionId, {
+      await apiClient.modifySubscription(userStore.currentUser.id, defaultSubscription.value.subscriptionId, {
         planSlug: newPlanSlug,
         renewPlanSlug:
           newPlanSlug,
       })
     }
     else {
-      await apiClient.createSubscription(userStore.currentUser.email, newPlanSlug)
+      await apiClient.createSubscription(userStore.currentUser.id, newPlanSlug)
     }
 
     await Promise.all([fetchSubscriptions(true), fetchEntitlements(true)])

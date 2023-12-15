@@ -16,6 +16,7 @@
     "@heroicons/vue": "^2.0.18",
     "@pinia/nuxt": "^0.5.1",
     "@planship/fetch": "^0.0.11",
+    "@rajesh896/broprint.js": "^2.1.1",
     "pinia": "^2.1.7"
   },
   "devDependencies": {

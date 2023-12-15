@@ -17,6 +17,9 @@ dependencies:
   '@planship/fetch':
     specifier: ^0.0.11
     version: 0.0.11
+  '@rajesh896/broprint.js':
+    specifier: ^2.1.1
+    version: 2.1.1
   pinia:
     specifier: ^2.1.7
     version: 2.1.7(typescript@5.3.3)(vue@3.3.11)
@@ -1580,6 +1583,11 @@ packages:
   /@polka/url@1.0.0-next.24:
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
     dev: true
+
+  /@rajesh896/broprint.js@2.1.1:
+    resolution: {integrity: sha512-34L0SFrOLHWAhF4ZU7QS32zItGOKdu3BY0DmMwoW6zekLuJWSuCIK07Xzgyy2AqCCUByd2VHMr2wbHousid+qg==}
+    hasBin: true
+    dev: false
 
   /@rollup/plugin-alias@5.1.0(rollup@4.8.0):
     resolution: {integrity: sha512-lpA3RZ9PdIG7qqhEfv79tBffNaoDuukFDrmhLqg9ifv99u/ehn+lOg30x2zmhf8AQqQUZaMk/B9fZraQ6/acDQ==}

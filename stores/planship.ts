@@ -116,7 +116,7 @@ export const usePlanshipStore = defineStore('planship', () => {
       }
 
       if (!user) {
-        // Customer doesn't exist in Planship. register them
+        // Register customer if they don't exist in Planship
         const user = await apiClient.createCustomer({ alternativeId: userStore.currentUser.email })
         await apiClient.createSubscription(user.id, 'personal')
       }

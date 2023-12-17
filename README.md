@@ -1,6 +1,6 @@
 # Planship Nuxt 3 Clicker Demo
 
-Welcome to the [Planship](https://docs.planship.io) demo app built with [Nuxt 3](https://nuxt.com) that uses [Pinia](https://pinia.vuejs.org/). This app demonstrates the use of Planship for implementing subscription plans with feature and usage-based entitlements.
+Welcome to the [Planship](https://docs.planship.io) demo app built with [Nuxt 3](https://nuxt.com) and [Pinia](https://pinia.vuejs.org/). This app demonstrates the use of Planship for implementing subscription plans with feature and usage-based entitlements.
 
 ## What is the Clicker Demo app?
 

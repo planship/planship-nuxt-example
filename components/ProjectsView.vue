@@ -66,9 +66,8 @@ function deleteProject(slug) {
     </ul>
     <div class="flex py-2 justify-stretch">
       <button
-        class="w-full rounded-md px-3 py-3 text-base text-white font-medium "
+        class="create-project-btn"
         :disabled="!canCreateProject"
-        :class="canCreateProject ? 'bg-green-500 hover:bg-opacity-90' : 'bg-gray-400'"
         @click="setCreateDialogOpen(true)"
       >
         Create new project
@@ -153,6 +152,14 @@ function deleteProject(slug) {
 }
 
 .project-list li {
-  @apply flex justify-between gap-x-6 py-7 px-4 my-3 border
+  @apply flex justify-between gap-x-6 py-7 px-4 my-3 border;
+}
+
+.create-project-btn {
+  @apply w-full rounded-md px-3 py-3 text-base text-white font-medium bg-green-500 hover:bg-opacity-90;
+}
+
+.create-project-btn:disabled {
+  @apply bg-gray-400
 }
 </style>

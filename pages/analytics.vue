@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { usePlanshipStore } from '@/stores/planship'
 
 const planshipStore = usePlanshipStore()
+planshipStore.fetchClickAnalytics(true)
 const { clickAnalytics } = storeToRefs(planshipStore)
 </script>
 

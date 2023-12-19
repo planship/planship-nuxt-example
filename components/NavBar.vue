@@ -1,88 +1,75 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { Bars3Icon } from '@heroicons/vue/24/outline'
 import { useUserStore } from '@/stores/user'
 import { usePlanshipStore } from '@/stores/planship'
 
 const { currentUser } = storeToRefs(useUserStore())
+const menuOpen = ref(false)
 
 const planshipStore = usePlanshipStore()
 
 const { currentPlanName, entitlements } = storeToRefs(planshipStore)
-
-function setCreateDialogOpen(value) {
-  isOpen.value = value
-}
-
-if (!currentUser)
-  setCreateDialogOpen(true)
 </script>
 
 <template>
-  <Disclosure as="nav" class="bg-gray-800">
+  <Disclosure as="nav" class="bg-gray-800 text-gray-300">
     <div class="mx-auto max-w-full px-4">
-      <div class="flex h-16 items-center justify-between">
-        <div class="flex items-center">
-          <div class="hidden md:block">
-            <div class="ml-10 flex items-baseline space-x-4">
+      <div class="flex items-start justify-between py-4">
+        <div class="grow">
+          <div class="md:hidden">
+            <button type="button" class="block" @click="menuOpen = !menuOpen">
+              <Bars3Icon class=" w-8 h-8" />
+            </button>
+          </div>
+          <div :class="menuOpen ? 'block' : 'hidden'" class="md:flex">
+            <div class="nav-link">
               <NuxtLink
+                class="block"
                 to="/"
-                class="nav-link"
+                @click="menuOpen = false"
               >
                 Projects
               </NuxtLink>
+            </div>
+            <div v-if="entitlements.analyticsPanel" class="nav-link grow-0">
               <NuxtLink
-                v-if="entitlements.analyticsPanel"
+                class="block"
                 to="/analytics"
-                class="nav-link"
+                @click="menuOpen = false"
               >
                 Analytics
               </NuxtLink>
             </div>
-          </div>
-        </div>
-        <div class="hidden md:block">
-          <div class="ml-4 flex items-center md:ml-6">
-            <!-- Profile dropdown -->
-            <div class="ml-4 flex items-center md:ml-6 nav-caption">
+            <div class="grow" />
+            <div class="nav-caption">
               Subscription clicks left: {{ entitlements.subscriptionButtonClicks }}
             </div>
-            <div class="ml-4 flex items-center md:ml-6 nav-caption">
+            <div class="nav-caption">
               Clicks left this minute: {{ entitlements.buttonClicksPerMinute }}
             </div>
-            <NuxtLink to="/subscription" class="nav-link" aria-current="undefined">
-              Current plan: {{ currentPlanName }}
-            </NuxtLink>
-            <Menu as="div" class="relative ml-3">
-              <div>
-                <MenuButton class="user-btn">
-                  <span class="sr-only">Open user menu</span>
-                  <img class="h-8 w-8 rounded-full" :src="currentUser.imageUrl" alt="">
-                </MenuButton>
-              </div>
-              <transition
-                enter-active-class="transition ease-out duration-100"
-                enter-from-class="transform opacity-0 scale-95"
-                enter-to-class="transform opacity-100 scale-100"
-                leave-active-class="transition ease-in duration-75"
-                leave-from-class="transform opacity-100 scale-100"
-                leave-to-class="transform opacity-0 scale-95"
-              >
-                <MenuItems class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100">
-                  <div class="px-1 py-1 ">
-                    <MenuItem>
-                      <span class="block px-4 py-2 text-sm text-gray-700">Signed in as <b>{{ currentUser.name }}</b></span>
-                    </MenuItem>
-                  </div>
-                  <div class="px-1 py-1 ">
-                    <MenuItem v-slot="{ active }">
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700" :class="[active ? 'bg-gray-100' : '']">Log out</a>
-                    </MenuItem>
-                  </div>
-                </MenuItems>
-              </transition>
-            </Menu>
+            <div class="nav-link">
+              <NuxtLink class="block" to="/subscription" aria-current="undefined" @click="menuOpen = false">
+                Current plan: {{ currentPlanName }}
+              </NuxtLink>
+            </div>
           </div>
+        </div>
+        <div>
+          <Menu as="div" class="relative ml-3">
+            <MenuButton class="user-btn">
+              <span class="sr-only">Open user menu</span>
+              <img class="h-8 w-8 rounded-full" :src="currentUser.imageUrl" alt="">
+            </MenuButton>
+            <MenuItems class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100">
+              <div class="px-1 py-1 ">
+                <MenuItem>
+                  <span class="block px-4 py-2 text-sm text-gray-700">Signed in as <b>{{ currentUser.name }}</b></span>
+                </MenuItem>
+              </div>
+            </MenuItems>
+          </Menu>
         </div>
       </div>
     </div>
@@ -91,7 +78,7 @@ if (!currentUser)
 
 <style lang="postcss">
 .nav-caption {
-  @apply text-gray-300 rounded-md px-3 py-2 text-sm font-medium;
+  @apply text-gray-400 rounded-md px-3 py-2 text-sm font-light;
 }
 
 .nav-link {

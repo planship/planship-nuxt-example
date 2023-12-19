@@ -24,7 +24,7 @@ const planSelection = ref(planshipStore.currentPlanSlug)
       <RadioGroupLabel class="sr-only">
         Plan
       </RadioGroupLabel>
-      <div class="flex justify-between gap-x-6 lg:grid lg:grid-cols-3">
+      <div class="flex flex-col md:flex-row justify-between gap-6">
         <RadioGroupOption
           v-for="plan in plans"
           :key="plan.slug"
@@ -39,58 +39,36 @@ const planSelection = ref(planshipStore.currentPlanSlug)
                 : '',
               checked ? 'bg-blue-600 bg-opacity-75 text-white ' : 'bg-white ',
             ]"
-            class="relative flex cursor-pointer rounded-lg p-2 shadow-md focus:outline-none"
+            class="md:flex-1 md:flex-grow w-full cursor-pointer p-5 rounded-lg mx-auto text-center shadow-md focus:outline-none"
           >
-            <div class="flex flex-col items-center p-3 mx-auto max-w-lg text-center">
-              <div class="h-8 w-8 text-white mb-5">
-                <svg v-show="checked" viewBox="0 0 24 24" fill="none">
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="12"
-                    fill="#fff"
-                    fill-opacity="0.2"
-                  />
-                  <path
-                    d="M7 13l3 3 7-7"
-                    stroke="#fff"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </div>
-              <div class="flex flex-col items-center">
-                <RadioGroupLabel
-                  as="p"
-                  :class="checked ? 'text-white' : 'text-gray-900'"
-                  class="text-2xl font-semibold"
-                >
-                  {{ plan.name }}
-                </RadioGroupLabel>
-                <RadioGroupDescription
-                  as="div"
-                  :class="checked ? 'text-sky-100' : 'text-gray-500'"
-                  class="inline"
-                >
-                  <p class="font-light my-4">
-                    {{ plan.description }}
-                  </p>
-                  <ul
-                    v-for="entitlement in plan.entitlements"
-                    :key="entitlement.name"
-                    :value="entitlement.name"
-                    role="list"
-                    class="mb-1 space-y-1 text-left"
-                    :class="checked ? 'text-white' : 'text-gray-900'"
-                  >
-                    <li class="flex items-center space-x-2">
-                      <span v-html="entitlement.name" />
-                    </li>
-                  </ul>
-                </RadioGroupDescription>
-              </div>
-            </div>
+            <RadioGroupLabel
+              as="p"
+              :class="checked ? 'text-white' : 'text-gray-900'"
+              class="text-2xl font-semibold"
+            >
+              {{ plan.name }}
+            </RadioGroupLabel>
+            <RadioGroupDescription
+              as="div"
+              :class="checked ? 'text-sky-100' : 'text-gray-500'"
+              class="inline"
+            >
+              <p class="font-light my-4">
+                {{ plan.description }}
+              </p>
+              <ul
+                v-for="entitlement in plan.entitlements"
+                :key="entitlement.name"
+                :value="entitlement.name"
+                role="list"
+                class="mb-1 space-y-1 text-left"
+                :class="checked ? 'text-white' : 'text-gray-900'"
+              >
+                <li class="flex items-center space-x-2">
+                  <span v-html="entitlement.name" />
+                </li>
+              </ul>
+            </RadioGroupDescription>
           </div>
         </RadioGroupOption>
       </div>

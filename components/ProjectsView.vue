@@ -42,28 +42,37 @@ function deleteProject(slug) {
 
 <template>
   <div class="px-4">
-    <ul class="project-list" role="list">
-      <li v-for="project in projects" :key="project.slug">
-        <div class="flex-none w-32">
-          <p class="project-name">
-            {{ project.name }}
-          </p>
-          <p class="project-type">
-            Type: {{ project.type }}
-          </p>
+    <div class="project-list" role="list">
+      <div
+        v-for="project in projects" :key="project.slug"
+        class="flex flex-col sm:flex-row items-center gap-1 py-4 my-3 border"
+      >
+        <div class="flex grow items-center w-full">
+          <div class="w-32 ml-4">
+            <p class="project-name">
+              {{ project.name }}
+            </p>
+            <p class="project-type">
+              Type: {{ project.type }}
+            </p>
+          </div>
+          <ProjectButtons class="sm:w-64 w-full" :project="project" />
         </div>
-        <ProjectButtons :project="project" />
-        <div class="w-64">
-          <span class="text-sm font-medium">Project usage: <b>{{ project.usage }} </b></span>
+        <div class="grow" />
+        <div class="flex grow items-center w-full sm:w-auto justify-center">
+          <div class="w-32 flex justify-right ml-4">
+            <span class="text-sm">Clicks: <strong>{{ project.usage }}</strong></span>
+          </div>
+          <div class="sm:hidden grow" />
+          <div class="w-16 flex justify-center">
+            <button type="button" class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white" @click="deleteProject(project.slug)">
+              <span class="sr-only">Delete</span>
+              <TrashIcon class="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
         </div>
-        <div class="hidden sm:flex sm:flex-col sm:items-end">
-          <button type="button" class="ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white" @click="deleteProject(project.slug)">
-            <span class="sr-only">Delete</span>
-            <TrashIcon class="h-6 w-6" aria-hidden="true" />
-          </button>
-        </div>
-      </li>
-    </ul>
+      </div>
+    </div>
     <div class="flex py-2 justify-stretch">
       <button
         class="create-project-btn"

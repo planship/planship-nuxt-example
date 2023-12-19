@@ -1,4 +1,4 @@
-import { defineStore, skipHydrate } from 'pinia'
+import { defineStore, skipHydrate, getActivePinia } from 'pinia'
 
 import { Planship } from '@planship/fetch'
 import { useUserStore } from '@/stores/user'
@@ -75,7 +75,6 @@ export const usePlanshipStore = defineStore('planship', () => {
   const clickAnalytics = ref({})
   const currentUser = ref({})
 
-  const userStore = useUserStore()
   const projectsStore = useProjectsStore()
   const { ssrContext } = useNuxtApp()
   const apiClient = ssrContext ? createServerApiClient() : createBrowserApiClient()
@@ -105,18 +104,25 @@ export const usePlanshipStore = defineStore('planship', () => {
       return
 
     try {
-      let user
+      const userStore = useUserStore(getActivePinia())
+      const fingerprint = useCookie('planship-fingerprint')
+      console.log(`Fingerprint cookie in planship store: ${fingerprint?.value}`)
+      let user = undefined
       try {
+        console.log(`Fetching a customer for id ${userStore.currentUser.id}`)
         user = await apiClient.getCustomer(userStore.currentUser.id)
+        console.log(`User found: ${user.id}`)
       }
       catch (error) {
         // If the API response error is different from 404 (customer not found), rethrow it
         if (error.response.status !== 404)
           throw error
       }
-
-      if (!user) {
+      console.dir(user)
+      console.log(`Checking user`)
+      if (user === undefined) {
         // Register customer if they don't exist in Planship
+        console.log(`Creating a customer with id ${userStore.currentUser.id}`)
         user = await apiClient.createCustomer({ alternativeId: userStore.currentUser.id })
         await apiClient.createSubscription(user.id, 'personal')
       }
@@ -124,7 +130,7 @@ export const usePlanshipStore = defineStore('planship', () => {
     }
     catch (error) {
       // Handle Plaship API errors here
-      console.dir(error.response)
+      console.dir(error)
     }
   }
 
@@ -133,7 +139,8 @@ export const usePlanshipStore = defineStore('planship', () => {
       return
 
     try {
-      const entitlements = await apiClient.getEntitlements(userStore.currentUser.id, updateEntitlementsCb)
+      const entitlements = await apiClient.getEntitlements(currentUser.value.id, updateEntitlementsCb)
+      console.dir(entitlements)
       if (entitlements)
         entitlementsDict.value = entitlements
     }
@@ -195,7 +202,7 @@ export const usePlanshipStore = defineStore('planship', () => {
 
   async function modifySubscription(newPlanSlug: string) {
     if (defaultSubscription.value?.subscriptionId) {
-      await apiClient.modifySubscription(userStore.currentUser.id, defaultSubscription.value.subscriptionId, {
+      await apiClient.modifySubscription(currentUser.value.id, defaultSubscription.value.subscriptionId, {
         planSlug: newPlanSlug,
         renewPlanSlug:
           newPlanSlug,

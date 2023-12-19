@@ -1,13 +1,19 @@
 <script setup>
 import { getCurrentBrowserFingerPrint } from '@rajesh896/broprint.js'
 
-const route = useRoute()
+definePageMeta({
+  layout: 'empty'
+})
 
+const route = useRoute()
 onBeforeMount(async () => {
   const fingerprint = useCookie('planship-fingerprint')
   fingerprint.value = await getCurrentBrowserFingerPrint()
+  console.log(`Redirect ${route.query.callback}`)
   navigateTo(route.query.callback)
 })
 </script>
 
-<template></template>
+<template>
+  <NuxtLayout name='empty'/>
+</template>

@@ -6,16 +6,14 @@ export interface UserState {
   currentUser?: User
 }
 
-const vader: User = {
-  id: '',
-  name: 'Darth Vader',
-  email: 'vader@empire.gov',
-  imageUrl: 'https://planship-samples.s3.us-west-2.amazonaws.com/assets/pngaaa.com-3028172.png',
-}
-
 export const useUserStore = defineStore('user', {
   state: () => ({
-    currentUser: vader,
+    currentUser: {
+        id: '',
+        name: 'Darth Vader',
+        email: 'vader@empire.gov',
+        imageUrl: 'https://planship-samples.s3.us-west-2.amazonaws.com/assets/pngaaa.com-3028172.png',
+      },
   } as UserState),
   getters: {
   },

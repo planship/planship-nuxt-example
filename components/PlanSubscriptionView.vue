@@ -19,7 +19,7 @@ const planSelection = ref(planshipStore.currentPlanSlug)
 </script>
 
 <template>
-  <div class="px-16 py-8">
+  <div class="p-4 md:px-16">
     <RadioGroup v-model="planSelection">
       <RadioGroupLabel class="sr-only">
         Plan
@@ -39,7 +39,7 @@ const planSelection = ref(planshipStore.currentPlanSlug)
                 : '',
               checked ? 'bg-blue-600 bg-opacity-75 text-white ' : 'bg-white ',
             ]"
-            class="md:flex-1 md:flex-grow w-full cursor-pointer p-5 rounded-lg mx-auto text-center shadow-md focus:outline-none"
+            class="md:flex-1 md:flex-grow w-full cursor-pointer p-4 rounded-lg mx-auto text-center shadow-md focus:outline-none"
           >
             <RadioGroupLabel
               as="p"
@@ -53,7 +53,7 @@ const planSelection = ref(planshipStore.currentPlanSlug)
               :class="checked ? 'text-sky-100' : 'text-gray-500'"
               class="inline"
             >
-              <p class="font-light my-4">
+              <p class="font-light my-2">
                 {{ plan.description }}
               </p>
               <ul
@@ -61,7 +61,7 @@ const planSelection = ref(planshipStore.currentPlanSlug)
                 :key="entitlement.name"
                 :value="entitlement.name"
                 role="list"
-                class="mb-1 space-y-1 text-left"
+                class="mb-1 text-left"
                 :class="checked ? 'text-white' : 'text-gray-900'"
               >
                 <li class="flex items-center space-x-2">

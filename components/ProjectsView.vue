@@ -45,10 +45,10 @@ function deleteProject(slug) {
     <div class="project-list" role="list">
       <div
         v-for="project in projects" :key="project.slug"
-        class="flex flex-col sm:flex-row items-center gap-1 py-4 my-3 border"
+        class="flex flex-col sm:flex-row gap-1 p-2 my-3 border"
       >
-        <div class="flex grow items-center w-full">
-          <div class="w-32 ml-4">
+        <div class="flex grow w-full">
+          <div class="w-32">
             <p class="project-name">
               {{ project.name }}
             </p>
@@ -56,15 +56,15 @@ function deleteProject(slug) {
               Type: {{ project.type }}
             </p>
           </div>
-          <ProjectButtons class="sm:w-64 w-full" :project="project" />
+          <ProjectButtons class="sm:w-64 w-full ml-2" :project="project" />
         </div>
         <div class="grow" />
         <div class="flex grow items-center w-full sm:w-auto justify-center">
-          <div class="w-32 flex justify-right ml-4">
+          <div class="w-32 flex justify-right">
             <span class="text-sm">Clicks: <strong>{{ project.usage }}</strong></span>
           </div>
           <div class="sm:hidden grow" />
-          <div class="w-16 flex justify-center">
+          <div class="w-16 flex justify-end">
             <button type="button" class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white" @click="deleteProject(project.slug)">
               <span class="sr-only">Delete</span>
               <TrashIcon class="h-6 w-6" aria-hidden="true" />

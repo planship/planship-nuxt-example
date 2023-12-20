@@ -1,12 +1,12 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { Bars3Icon } from '@heroicons/vue/24/outline'
 import { useUserStore } from '@/stores/user'
 import { usePlanshipStore } from '@/stores/planship'
 
+const route = useRoute()
+
 const { currentUser } = storeToRefs(useUserStore())
-const menuOpen = ref(false)
 
 const planshipStore = usePlanshipStore()
 
@@ -18,39 +18,35 @@ const { currentPlanName, entitlements } = storeToRefs(planshipStore)
     <div class="mx-auto max-w-full px-4">
       <div class="flex items-start justify-between py-4">
         <div class="grow">
-          <div class="md:hidden">
-            <button type="button" class="block" @click="menuOpen = !menuOpen">
-              <Bars3Icon class=" w-8 h-8" />
-            </button>
-          </div>
-          <div :class="menuOpen ? 'block' : 'hidden'" class="md:flex">
-            <div class="nav-link">
+          <div class="flex flex-col md:flex-row">
+            <div
+              class="nav-link order-0"
+              :class="route.name === 'index' ? 'bg-gray-700' : ''"
+            >
               <NuxtLink
                 class="block"
                 to="/"
-                @click="menuOpen = false"
               >
                 Projects
               </NuxtLink>
             </div>
-            <div v-if="entitlements.analyticsPanel" class="nav-link grow-0">
+            <div v-if="entitlements.analyticsPanel" class="nav-link grow-0 order-2" :class="route.name === 'analytics' ? 'bg-gray-700' : ''">
               <NuxtLink
                 class="block"
                 to="/analytics"
-                @click="menuOpen = false"
               >
                 Analytics
               </NuxtLink>
             </div>
-            <div class="grow" />
-            <div class="nav-caption">
+            <div class="grow order-3" />
+            <div class="nav-caption order-4">
               Subscription clicks left: {{ entitlements.subscriptionButtonClicks }}
             </div>
-            <div class="nav-caption">
+            <div class="nav-caption order-5">
               Clicks left this minute: {{ entitlements.buttonClicksPerMinute }}
             </div>
-            <div class="nav-link">
-              <NuxtLink class="block" to="/subscription" aria-current="undefined" @click="menuOpen = false">
+            <div class="nav-link order-2 md:order-last" :class="route.name === 'subscription' ? 'bg-gray-700' : ''">
+              <NuxtLink class="block" to="/subscription" aria-current="undefined">
                 Current plan: {{ currentPlanName }}
               </NuxtLink>
             </div>
@@ -78,11 +74,11 @@ const { currentPlanName, entitlements } = storeToRefs(planshipStore)
 
 <style lang="postcss">
 .nav-caption {
-  @apply text-gray-400 rounded-md px-3 py-2 text-sm font-light;
+  @apply text-gray-400 rounded-md px-3 pt-2 text-sm font-light;
 }
 
 .nav-link {
-  @apply text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium;
+  @apply text-gray-300 hover:bg-gray-600 hover:text-white rounded-md px-3 py-2 text-sm font-medium;
 }
 
 .user-btn {

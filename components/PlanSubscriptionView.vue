@@ -73,9 +73,9 @@ const planSelection = ref(planshipStore.currentPlanSlug)
         </RadioGroupOption>
       </div>
     </RadioGroup>
-    <div class="flex mt-10 justify-end">
+    <div class="flex mt-10 justify-end ">
       <button
-        class="rounded-md px-10 py-3 text-base text-white font-medium"
+        class="block md:w-64 w-full rounded-md px-10 py-3 text-base text-white font-medium"
         :class="currentPlanSlug !== planSelection ? 'bg-green-500 hover:bg-opacity-90' : 'bg-gray-400'"
         :disabled="currentPlanSlug === planSelection"
         @click="modifySubscription(planSelection)"

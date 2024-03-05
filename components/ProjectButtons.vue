@@ -15,7 +15,6 @@ const { project } = toRefs(props)
 const batchClicks = ref(5)
 
 function generateClicks(count: number) {
-  props.project.usage += count
   planshipStore.reportButtonClicks(count, props.project.name)
 }
 </script>

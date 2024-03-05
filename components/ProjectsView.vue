@@ -31,7 +31,6 @@ function createProject() {
     name: newProjectName.value,
     slug: newProjectName.value,
     type: newProjectType.value,
-    usage: 0,
   })
   setCreateDialogOpen(false)
 }
@@ -60,9 +59,6 @@ function deleteProject(slug) {
         </div>
         <div class="grow" />
         <div class="flex grow items-center w-full sm:w-auto justify-center">
-          <div class="w-32 flex justify-right">
-            <span class="text-sm">Clicks: <strong>{{ project.usage }}</strong></span>
-          </div>
           <div class="sm:hidden grow" />
           <div class="w-16 flex justify-end">
             <button type="button" class="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white" @click="deleteProject(project.slug)">

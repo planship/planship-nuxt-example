@@ -1,32 +1,6 @@
 import { defineStore, skipHydrate } from 'pinia'
-
-import { Planship } from '@planship/fetch'
 import { useUserStore } from '@/stores/user'
 import { useProjectsStore } from '@/stores/projects'
-
-async function getAccessToken() {
-  return fetch('/api/planshipToken').then(response => response.text())
-}
-
-function createServerApiClient() {
-  // Create Planship client using API credentials (server side only)
-  return new Planship(
-    'clicker-demo',
-    useRuntimeConfig().public.serverPlanshipApiUrl,
-    useRuntimeConfig().public.planshipApiClientId,
-    useRuntimeConfig().planshipApiClientSecret,
-    useRuntimeConfig().public.webSocketUrl,
-  )
-}
-
-function createBrowserApiClient() {
-  return new Planship(
-    'clicker-demo',
-    useRuntimeConfig().public.clientPlanshipApiUrl,
-    getAccessToken,
-    useRuntimeConfig().public.webSocketUrl,
-  )
-}
 
 export class Entitlements {
   private entitlementsDict: { [key: string]: string | number | boolean | string[] } = {
@@ -77,8 +51,7 @@ export const usePlanshipStore = defineStore('planship', () => {
 
   const userStore = useUserStore()
   const projectsStore = useProjectsStore()
-  const { ssrContext } = useNuxtApp()
-  const apiClient = ssrContext ? createServerApiClient() : createBrowserApiClient()
+  const planship = usePlanship()
 
   const defaultSubscription = computed(() => subscriptions.value?.[0])
 
@@ -101,13 +74,14 @@ export const usePlanshipStore = defineStore('planship', () => {
   }
 
   async function fetchCurrentUser(force: boolean = false) {
-    if (!force && currentUser.value?.email)
+    if (!force && currentUser.value?.email) {
       return
+    }
 
     try {
       let user
       try {
-        user = await apiClient.getCustomer(userStore.currentUser.email)
+        user = await planship.getCustomer(userStore.currentUser.email)
       }
       catch (error) {
         // If the API response error is different from 404 (customer not found), rethrow it
@@ -117,8 +91,8 @@ export const usePlanshipStore = defineStore('planship', () => {
 
       if (!user) {
         // Register customer if they don't exist in Planship
-        const user = await apiClient.createCustomer({ alternativeId: userStore.currentUser.email })
-        await apiClient.createSubscription(user.id, 'personal')
+        const user = await planship.createCustomer({ alternativeId: userStore.currentUser.email })
+        await planship.createSubscription(user.id, 'personal')
       }
       currentUser.value = user
     }
@@ -129,11 +103,12 @@ export const usePlanshipStore = defineStore('planship', () => {
   }
 
   async function fetchEntitlements(force: boolean = false) {
-    if (!force && Object.keys(entitlementsDict.value).length)
+    if (!force && Object.keys(entitlementsDict.value).length) {
       return
+    }
 
     try {
-      const entitlements = await apiClient.getEntitlements(userStore.currentUser.email, updateEntitlementsCb)
+      const entitlements = await planship.getEntitlements(userStore.currentUser.email, updateEntitlementsCb)
       if (entitlements)
         entitlementsDict.value = entitlements
     }
@@ -143,12 +118,13 @@ export const usePlanshipStore = defineStore('planship', () => {
   }
 
   async function fetchSubscriptions(force: boolean = false) {
-    if (!force && subscriptions.value?.length)
+    if (!force && subscriptions.value?.length) {
       return
+    }
 
     if (currentUser.value) {
       try {
-        subscriptions.value = await apiClient.listSubscriptions(currentUser.value.id)
+        subscriptions.value = await planship.listSubscriptions(currentUser.value.id)
       }
       catch (error) {
         console.dir(error.response)
@@ -157,24 +133,26 @@ export const usePlanshipStore = defineStore('planship', () => {
   }
 
   async function fetchPlans(force: boolean = false) {
-    if (!force && plans.value?.length)
+    if (!force && plans.value?.length) {
       return
+    }
 
-    const planList = await apiClient.listPlans()
+    const planList = await planship.listPlans()
     plans.value = await Promise.all(planList.map(async ({ slug }) => {
-      const plan = await apiClient.getPlan(slug)
+      const plan = await planship.getPlan(slug)
       plan.entitlements.sort((a, b) => (a.order - b.order))
       return plan
     }))
   }
 
   async function fetchClickAnalytics(force: boolean = false) {
-    if (!force && Object.keys(clickAnalytics.value).length)
+    if (!force && Object.keys(clickAnalytics.value).length) {
       return
+    }
 
     if (currentUser.value) {
       try {
-        clickAnalytics.value = await apiClient.getMeteringIdUsage(currentUser.value.id, 'button-click')
+        clickAnalytics.value = await planship.getMeteringIdUsage(currentUser.value.id, 'button-click')
       }
       catch (error) {
         console.dir(error.response)
@@ -195,21 +173,34 @@ export const usePlanshipStore = defineStore('planship', () => {
 
   async function modifySubscription(newPlanSlug: string) {
     if (defaultSubscription.value?.subscriptionId) {
-      await apiClient.modifySubscription(userStore.currentUser.email, defaultSubscription.value.subscriptionId, {
+      await planship.modifySubscription(userStore.currentUser.email, defaultSubscription.value.subscriptionId, {
         planSlug: newPlanSlug,
         renewPlanSlug:
           newPlanSlug,
       })
     }
     else {
-      await apiClient.createSubscription(userStore.currentUser.email, newPlanSlug)
+      await planship.createSubscription(userStore.currentUser.email, newPlanSlug)
     }
 
     await Promise.all([fetchSubscriptions(true), fetchEntitlements(true)])
   }
 
   async function reportButtonClicks(count: number, projectName: string) {
-    await apiClient.reportUsage(currentUser.value.id, 'button-click', count, projectName)
+    // Call server-side API to create a click event
+    try {
+      $fetch('api/click', {
+        method: 'post',
+        body: {
+          userId: currentUser.value.id,
+          count,
+          projectName
+        }
+      })
+    } catch (error) {
+      // Handle error
+      console.dir(error)
+    }
   }
 
   return {
@@ -236,6 +227,6 @@ export const usePlanshipStore = defineStore('planship', () => {
     fetchPlans,
     fetchClickAnalytics,
     modifySubscription,
-    apiClient: skipHydrate(apiClient),
+    planship: skipHydrate(planship),
   }
 })

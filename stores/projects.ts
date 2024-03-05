@@ -10,14 +10,12 @@ export interface ProjectsState {
 export const useProjectsStore = defineStore('projects', {
   state: () => ({
     projects: [
-      { name: 'First project', slug: 'first-project', type: 'Single', usage: 0 },
-      { name: 'Second project', slug: 'second-project', type: 'Single', usage: 0 },
+      { name: 'First project', slug: 'first-project', type: 'Single' },
+      { name: 'Second project', slug: 'second-project', type: 'Single' },
     ],
     currentProjectSlug: '',
   } as ProjectsState),
   getters: {
-    // projects: (state) => state.projects,
-    // currentProjectSlug: (state) => state.currentProjectSlug,
     currentProject: state => state.projects.find(project => project.slug === state.currentProjectSlug),
   },
   actions: {
@@ -35,5 +33,4 @@ export const useProjectsStore = defineStore('projects', {
     },
   },
   persist: true,
-
 })

@@ -15,7 +15,7 @@
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
     "@pinia/nuxt": "^0.5.1",
-    "@planship/fetch": "^0.2.2",
+    "@planship/fetch": "^0.2.3",
     "pinia": "^2.1.7"
   },
   "devDependencies": {

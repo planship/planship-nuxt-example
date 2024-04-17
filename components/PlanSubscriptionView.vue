@@ -19,7 +19,7 @@ const { modifySubscription } = planshipStore
 const { currentPlanSlug, plans } = storeToRefs(planshipStore)
 const planSelection = ref(planshipStore.currentPlanSlug)
 
-const changeSubscription = async (newPlan) => {
+async function changeSubscription(newPlan) {
   isChangingSubscription.value = true
   await modifySubscription(newPlan)
   isChangingSubscription.value = false

@@ -74,9 +74,8 @@ export const usePlanshipStore = defineStore('planship', () => {
   }
 
   async function fetchCurrentUser(force: boolean = false) {
-    if (!force && currentUser.value?.email) {
+    if (!force && currentUser.value?.email)
       return
-    }
 
     try {
       let user
@@ -103,9 +102,8 @@ export const usePlanshipStore = defineStore('planship', () => {
   }
 
   async function fetchEntitlements(force: boolean = false) {
-    if (!force && Object.keys(entitlementsDict.value).length) {
+    if (!force && Object.keys(entitlementsDict.value).length)
       return
-    }
 
     try {
       const entitlements = await planship.getEntitlements(userStore.currentUser.email, updateEntitlementsCb)
@@ -118,9 +116,8 @@ export const usePlanshipStore = defineStore('planship', () => {
   }
 
   async function fetchSubscriptions(force: boolean = false) {
-    if (!force && subscriptions.value?.length) {
+    if (!force && subscriptions.value?.length)
       return
-    }
 
     if (currentUser.value) {
       try {
@@ -133,9 +130,8 @@ export const usePlanshipStore = defineStore('planship', () => {
   }
 
   async function fetchPlans(force: boolean = false) {
-    if (!force && plans.value?.length) {
+    if (!force && plans.value?.length)
       return
-    }
 
     const planList = await planship.listPlans()
     plans.value = await Promise.all(planList.map(async ({ slug }) => {
@@ -146,9 +142,8 @@ export const usePlanshipStore = defineStore('planship', () => {
   }
 
   async function fetchClickAnalytics(force: boolean = false) {
-    if (!force && Object.keys(clickAnalytics.value).length) {
+    if (!force && Object.keys(clickAnalytics.value).length)
       return
-    }
 
     if (currentUser.value) {
       try {
@@ -194,10 +189,11 @@ export const usePlanshipStore = defineStore('planship', () => {
         body: {
           userId: currentUser.value.id,
           count,
-          projectName
-        }
+          projectName,
+        },
       })
-    } catch (error) {
+    }
+    catch (error) {
       // Handle error
       console.dir(error)
     }

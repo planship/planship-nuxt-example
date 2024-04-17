@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     console.log('Error: Insufficient clicks')
     throw createError({
       statusCode: 403,
-      statusMessage: 'Insufficient clicks available'
+      statusMessage: 'Insufficient clicks available',
     })
   }
 

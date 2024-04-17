@@ -23,7 +23,10 @@ export default defineNuxtConfig({
     planshipApiClientSecret: process.env.PLANSHIP_API_CLIENT_SECRET,
 
     public: {
+      planshipApiClientUrl: process.env.PLANSHIP_API_CLIENT_URL,
+      planshipApiServerUrl: process.env.PLANSHIP_API_SERVER_URL,
       planshipApiClientId: process.env.PLANSHIP_API_CLIENT_ID,
+      planshipApiWebsocketUrl: process.env.WEBSOCKET_URL
     },
   },
 })

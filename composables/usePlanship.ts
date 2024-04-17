@@ -14,12 +14,19 @@ function getPlanshipClient() {
         {
           clientId: useRuntimeConfig().public.planshipApiClientId,
           clientSecret: useRuntimeConfig().planshipApiClientSecret
+        },
+        {
+          baseUrl: useRuntimeConfig().public.planshipApiServerUrl,
         }
       )
     } else {
       planshipClient = new Planship(
         'clicker-demo',
-        getAccessToken
+        getAccessToken,
+        {
+          baseUrl: useRuntimeConfig().public.planshipApiClientUrl,
+          webSocketUrl: useRuntimeConfig().public.planshipApiWebsocketUrl,
+        }
       )
     }
   }

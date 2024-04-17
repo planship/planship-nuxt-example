@@ -12,10 +12,20 @@ import { usePlanshipStore } from '@/stores/planship'
 
 const planshipStore = usePlanshipStore()
 
+const isChangingSubscription = ref(false)
+
 const { modifySubscription } = planshipStore
 
 const { currentPlanSlug, plans } = storeToRefs(planshipStore)
 const planSelection = ref(planshipStore.currentPlanSlug)
+
+const changeSubscription = async (newPlan) => {
+  isChangingSubscription.value = true
+  await modifySubscription(newPlan)
+  isChangingSubscription.value = false
+}
+
+const changeSubscriptionDisabled = computed(() => planSelection.value == currentPlanSlug.value || isChangingSubscription.value)
 </script>
 
 <template>
@@ -76,9 +86,9 @@ const planSelection = ref(planshipStore.currentPlanSlug)
     <div class="flex mt-10 justify-end ">
       <button
         class="block md:w-64 w-full rounded-md px-10 py-3 text-base text-white font-medium"
-        :class="currentPlanSlug !== planSelection ? 'bg-green-500 hover:bg-opacity-90' : 'bg-gray-400'"
-        :disabled="currentPlanSlug === planSelection"
-        @click="modifySubscription(planSelection)"
+        :class="!changeSubscriptionDisabled ? 'bg-green-500 hover:bg-opacity-90' : 'bg-gray-400'"
+        :disabled="changeSubscriptionDisabled"
+        @click="changeSubscription(planSelection)"
       >
         Change subscription
       </button>

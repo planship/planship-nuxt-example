@@ -1,21 +1,35 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import type { Project } from '@/models/project'
-import { usePlanshipStore } from '@/stores/planship'
 
 const props = defineProps<{
   project: Project
 }>()
 
-const planshipStore = usePlanshipStore()
+const { currentUser } = storeToRefs(useUserStore())
 
-const { canGenerateButtonClick } = storeToRefs(planshipStore)
+const { entitlements } = await useCurrentPlanshipCustomer()
+
+const canGenerateButtonClick = computed(() => (entitlements.value?.buttonClicksPerMinute ?? 0) > 0 && (entitlements.value?.subscriptionButtonClicks ?? 0) > 0)
 
 const { project } = toRefs(props)
 const batchClicks = ref(5)
 
 function generateClicks(count: number) {
-  planshipStore.reportButtonClicks(count, props.project.name)
+  try {
+    $fetch('api/click', {
+      method: 'post',
+      body: {
+        userId: currentUser.value.email,
+        count,
+        projectName: props.project.name,
+      },
+    })
+  }
+  catch (error) {
+    // Handle error
+    console.dir(error)
+  }
 }
 </script>
 

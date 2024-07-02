@@ -1,9 +1,9 @@
 <script setup>
-import { storeToRefs } from 'pinia'
-import { usePlanshipStore } from '@/stores/planship'
+const { planshipCustomerApiClient } = useCurrentPlanshipCustomer()
 
-const planshipStore = usePlanshipStore()
-const { clickAnalytics } = storeToRefs(planshipStore)
+const { data: clickAnalytics } = await useLazyAsyncData('clickAnalytics', async () => {
+  return await planshipCustomerApiClient.getMeteringIdUsage('button-click')
+})
 </script>
 
 <template>

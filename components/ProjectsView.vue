@@ -9,7 +9,6 @@ import {
 
 import { storeToRefs } from 'pinia'
 import { useProjectsStore } from '@/stores/projects'
-import { usePlanshipStore } from '@/stores/planship'
 
 const isOpen = ref(false)
 const newProjectName = ref('New project')
@@ -19,8 +18,10 @@ const projectsStore = useProjectsStore()
 projectsStore.setCurrentProject('')
 const { projects } = storeToRefs(projectsStore)
 
-const planshipStore = usePlanshipStore()
-const { entitlements, canCreateProject } = storeToRefs(planshipStore)
+const { entitlements } = await useCurrentPlanshipCustomer()
+const canCreateProject = computed(() => {
+  return entitlements.value.maxProjects > projectsStore.projects.length
+})
 
 function setCreateDialogOpen(value) {
   isOpen.value = value

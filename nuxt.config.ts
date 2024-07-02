@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   css: [
     '@/assets/css/main.css',
   ],
+
   experimental: {
     renderJsonPayloads: false,
   },
@@ -17,13 +18,18 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
+    '@planship/nuxt',
   ],
 
-  runtimeConfig: {
-    planshipApiClientSecret: process.env.PLANSHIP_API_CLIENT_SECRET,
-
-    public: {
-      planshipApiClientId: process.env.PLANSHIP_API_CLIENT_ID,
-    },
+  planship: {
+    productSlug: 'clicker-demo',
+    clientId: process.env.PLANSHIP_CLIENT_ID,
+    clientSecret: process.env.PLANSHIP_CLIENT_SECRET,
   },
+
+  devtools: {
+    enabled: false,
+  },
+
+  compatibilityDate: '2024-07-12',
 })

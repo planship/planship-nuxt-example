@@ -1,7 +1,7 @@
-import usePlanship from '~/composables/usePlanship.ts'
+import { useServerApiClient } from '#planship/server'
 
 export default defineEventHandler(async (event) => {
-  const planship = usePlanship()
+  const planship = useServerApiClient()
   const body = await readBody(event)
 
   /*
@@ -9,6 +9,7 @@ export default defineEventHandler(async (event) => {
   both on the front-end in order to visually inform users AND the backend for the final decision on whether to
   perform an action or not.
   */
+
   const entitlements = await planship.getEntitlements(body.userId)
   if (entitlements['subscription-button-clicks'] <= 0 || entitlements['button-clicks-per-minute'] <= 0) {
     console.log('Error: Insufficient clicks')

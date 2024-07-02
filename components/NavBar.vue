@@ -2,15 +2,20 @@
 import { storeToRefs } from 'pinia'
 import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { useUserStore } from '@/stores/user'
-import { usePlanshipStore } from '@/stores/planship'
 
 const route = useRoute()
 
 const { currentUser } = storeToRefs(useUserStore())
 
-const planshipStore = usePlanshipStore()
+const { entitlements, planshipCustomerApiClient } = await useCurrentPlanshipCustomer()
 
-const { currentPlanName, entitlements } = storeToRefs(planshipStore)
+const { data: subscriptions } = await useLazyAsyncData('subscriptions', async () => {
+  return await planshipCustomerApiClient.listSubscriptions()
+})
+
+const currentPlanName = computed(() => {
+  return subscriptions.value[0]?.plan.name
+})
 </script>
 
 <template>
@@ -54,7 +59,7 @@ const { currentPlanName, entitlements } = storeToRefs(planshipStore)
         </div>
         <div class="shrink-0">
           <Menu as="div" class="relative ml-3">
-            <MenuButton class="user-btn">
+            <MenuButton id="menu-button" class="user-btn">
               <span class="sr-only">Open user menu</span>
               <img class="h-8 w-8 rounded-full" :src="currentUser.imageUrl" alt="">
             </MenuButton>

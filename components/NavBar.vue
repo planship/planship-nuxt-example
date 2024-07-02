@@ -2,15 +2,18 @@
 import { storeToRefs } from 'pinia'
 import { Disclosure, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { useUserStore } from '@/stores/user'
-import { usePlanshipStore } from '@/stores/planship'
+
 
 const route = useRoute()
 
 const { currentUser } = storeToRefs(useUserStore())
 
-const planshipStore = usePlanshipStore()
+const { entitlements, subscriptions } = await useCurrentPlanshipCustomer()
 
-const { currentPlanName, entitlements } = storeToRefs(planshipStore)
+const currentPlanName = computed(() => {
+  return subscriptions.value[0]?.plan.name
+})
+
 </script>
 
 <template>

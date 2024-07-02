@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import {
@@ -8,24 +8,58 @@ import {
   RadioGroupLabel,
   RadioGroupOption,
 } from '@headlessui/vue'
-import { usePlanshipStore } from '@/stores/planship'
 
-const planshipStore = usePlanshipStore()
 
 const isChangingSubscription = ref(false)
 
-const { modifySubscription } = planshipStore
+const { currentUser } = storeToRefs(useUserStore())
 
-const { currentPlanSlug, plans } = storeToRefs(planshipStore)
-const planSelection = ref(planshipStore.currentPlanSlug)
+const { apiClient } = await useCurrentPlanshipCustomer()
 
-async function changeSubscription(newPlan) {
+
+const { data: plans } = await useAsyncData('plans',
+  async () => {
+    const planList = await apiClient.listPlans()
+    return await Promise.all(planList.map(async ({ slug }) => {
+      const plan = await apiClient.getPlan(slug)
+      plan.entitlements.sort((a, b) => ((a.order ?? 0) - (b.order ?? 0)))
+      return plan
+    }))
+  }
+)
+
+const { data: subscriptions, refresh: refreshSubs } = await useAsyncData('subscriptions',
+  async () => {
+    return await apiClient.listSubscriptions()
+  }
+)
+
+const currentSubscription = computed(() => subscriptions.value[0])
+const currentPlanSlug = computed(() => currentSubscription.value?.plan.slug)
+const planSelection = ref(currentSubscription.value?.plan.slug)
+
+async function changeSubscription(newPlanSlug) {
   isChangingSubscription.value = true
-  await modifySubscription(newPlan)
+
+  if (currentSubscription.value?.subscriptionId) {
+    await apiClient.modifySubscription(currentSubscription.value.subscriptionId, {
+      planSlug: newPlanSlug,
+      renewPlanSlug:newPlanSlug,
+    })
+  }
+  else {
+    await apiClient.createSubscription(currentUser.value.email, newPlanSlug)
+  }
+
+  await refreshSubs()
+
+  // await Promise.all([fetchSubscriptions(true), fetchEntitlements(true)])
+
+  // await modifySubscription(newPlan)
   isChangingSubscription.value = false
 }
 
-const changeSubscriptionDisabled = computed(() => planSelection.value == currentPlanSlug.value || isChangingSubscription.value)
+const changeSubscriptionDisabled = computed(() => planSelection.value === currentPlanSlug.value || isChangingSubscription.value)
 </script>
 
 <template>

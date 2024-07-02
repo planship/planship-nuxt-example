@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { usePlanshipStore } from '@/stores/planship'
 
-const planshipStore = usePlanshipStore()
-await planshipStore.fetchAll()
 </script>
 
 <template>

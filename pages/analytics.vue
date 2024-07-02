@@ -1,9 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia'
-import { usePlanshipStore } from '@/stores/planship'
 
-const planshipStore = usePlanshipStore()
-const { clickAnalytics } = storeToRefs(planshipStore)
+const { clickAnalytics } = {}
 </script>
 
 <template>

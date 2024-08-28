@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     productSlug: 'clicker-demo',
     clientId: process.env.PLANSHIP_CLIENT_ID,
     clientSecret: process.env.PLANSHIP_CLIENT_SECRET,
+    debugLogging: true,
   },
 
   devtools: {

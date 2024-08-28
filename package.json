@@ -11,20 +11,17 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
-  "dependencies": {
-    "@headlessui/vue": "^1.7.22",
-    "@heroicons/vue": "^2.1.5",
-    "@pinia/nuxt": "^0.5.1",
-    "@planship/fetch": "^0.2.3",
-    "@planship/nuxt": "0.1.0",
-    "pinia": "^2.1.7"
-  },
   "devDependencies": {
     "@antfu/eslint-config": "^2.22.0",
+    "@headlessui/vue": "^1.7.22",
+    "@heroicons/vue": "^2.1.5",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
+    "@pinia/nuxt": "^0.5.1",
+    "@planship/nuxt": "0.1.1-alpha4",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
     "nuxt": "^3.12.3",
+    "pinia": "^2.1.7",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.4"
   }

@@ -50,10 +50,7 @@ const currentPlanName = computed(() => {
           <div class="grow" />
           <div class="flex flex-col md:flex-row mt-3 md:mt-0 md:items-center">
             <div class="nav-caption">
-              Subscription clicks left: {{ entitlements.subscriptionButtonClicks }}
-            </div>
-            <div class="nav-caption">
-              Clicks left this minute: {{ entitlements.buttonClicksPerMinute }}
+              Button clicks left: {{ entitlements.subscriptionButtonClicks }}
             </div>
           </div>
         </div>

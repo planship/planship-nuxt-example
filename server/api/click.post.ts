@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   */
 
   const entitlements = await planship.getEntitlements(body.userId)
-  if (entitlements['subscription-button-clicks'] <= 0 || entitlements['button-clicks-per-minute'] <= 0) {
+  if (entitlements['subscription-button-clicks'] <= 0) {
     console.log('Error: Insufficient clicks')
     throw createError({
       statusCode: 403,

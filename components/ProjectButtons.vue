@@ -10,7 +10,7 @@ const { currentUser } = storeToRefs(useUserStore())
 
 const { entitlements } = await useCurrentPlanshipCustomer()
 
-const canGenerateButtonClick = computed(() => (entitlements.value?.buttonClicksPerMinute ?? 0) > 0 && (entitlements.value?.subscriptionButtonClicks ?? 0) > 0)
+const canGenerateButtonClick = computed(() => (entitlements.value?.subscriptionButtonClicks ?? 0) > 0)
 
 const { project } = toRefs(props)
 const batchClicks = ref(5)

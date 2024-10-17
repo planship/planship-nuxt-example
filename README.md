@@ -12,7 +12,7 @@ All of the pricing logic including subscription management, feature and usage en
 
 ## Getting started
 
-To get started, sign up for Planship at https://app.planship.io/auth/sign-up and navigate to the default organization that Planship created for you. You will see the `Clicker Demo` product and the default Planship API security credentials.
+To get started, [sign up for Planship](https://app.planship.io/auth/sign-up) and navigate to the default organization that Planship created for you. You will see the `Clicker Demo` product and the default Planship API security credentials.
 
 ![Screenshot of the Planship Console credentials view](assets/planship-creds.png)
 
@@ -40,4 +40,4 @@ pnpm dev
 
 ## Next steps
 
-To get started with Planship for your own product, check out the [Planship integration guide](https://docs.planship.io/integration). You may also want read more about core concepts like [feature levers](https://docs.planship.io/planship/feature-levers/), [metered usage](https://docs.planship.io/planship/metered-usage/), and [plans](https://docs.planship.io/planship/plans/).
+To get started with Planship for your own product, check out the [Planship integration guide](https://docs.planship.io/integration). You may also want read more about core concepts like [feature levers](https://docs.planship.io/concepts/feature-levers/), [metered usage](https://docs.planship.io/concepts/metered-levers/), and [plans](https://docs.planship.io/concepts/plans/).

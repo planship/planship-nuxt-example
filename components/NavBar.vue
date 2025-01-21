@@ -16,6 +16,10 @@ const { data: subscriptions } = await useLazyAsyncData('subscriptions', async ()
 const currentPlanName = computed(() => {
   return subscriptions.value[0]?.plan.name
 })
+
+const subscriptionRenewAt = computed(() => {
+  return subscriptions.value[0]?.renewAt.toLocaleDateString(undefined, { hour: 'numeric', minute: 'numeric'})
+})
 </script>
 
 <template>
@@ -51,6 +55,11 @@ const currentPlanName = computed(() => {
           <div class="flex flex-col md:flex-row mt-3 md:mt-0 md:items-center">
             <div class="nav-caption">
               Button clicks left: {{ entitlements.subscriptionButtonClicks }}
+            </div>
+          </div>
+          <div class="flex flex-col md:flex-row mt-3 md:mt-0 md:items-center">
+            <div class="nav-caption">
+              Subscription renewal at: {{ subscriptionRenewAt }}
             </div>
           </div>
         </div>

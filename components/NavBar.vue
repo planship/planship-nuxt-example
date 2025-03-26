@@ -59,7 +59,7 @@ const subscriptionRenewAt = computed(() => {
           </div>
           <div class="flex flex-col md:flex-row mt-3 md:mt-0 md:items-center">
             <div class="nav-caption">
-              Subscription renewal at: {{ subscriptionRenewAt }}
+              Subscription renewal at: {{ subscriptionRenewAt ?? 'Unknown' }}
             </div>
           </div>
         </div>

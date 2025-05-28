@@ -1,4 +1,5 @@
-import { Planship, CustomerSubscriptionWithPlan } from '@planship/fetch'
+import type { CustomerSubscriptionWithPlan } from '@planship/fetch'
+import { Planship } from '@planship/fetch'
 
 // This plugin initializes a Planship customer if one doesn't already exist for the default user.
 // These steps would typically be executed as a part of of customer registration flow, but this example app doesn't
@@ -14,19 +15,27 @@ export default defineNuxtPlugin(async () => {
     },
     {
       baseUrl: process.env.PLANSHIP_BASE_URL ?? '',
-      webSocketUrl: process.env.PLANSHIP_WEBSOCKET_URL ?? ''
+      webSocketUrl: process.env.PLANSHIP_WEBSOCKET_URL ?? '',
     },
   )
   let customer
   try {
     customer = await planshipClient.getCustomer(userId)
-  } catch (error) {
+  }
+  catch (error) {
     if (error?.response?.status === 404) {
       // Create a Planship customer for the default user if one doesn't exist. This would typically be called during
       // a new customer sign-up, but this example app doesn't implement the sign-up/sign-in flow.
       customer = await planshipClient.createCustomer({ alternativeId: userId })
       console.log(`Created Planship customer for user ${userId}:`, customer.id)
-    } else {
+    }
+    else if (error?.response?.status === 401) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'Invalid Planship Credentials, check your PLANSHIP_API_CLIENT_ID and PLANSHIP_API_CLIENT_SECRET environment variables',
+      })
+    }
+    else {
       throw error
     }
   }
@@ -40,5 +49,4 @@ export default defineNuxtPlugin(async () => {
       console.log(`Created initial Planship subscription to plan Personal for user ${userId}:`, subscription.id)
     }
   }
-
 })

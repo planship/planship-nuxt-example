@@ -7,9 +7,9 @@ const route = useRoute()
 
 const { currentUser } = storeToRefs(useUserStore())
 
-const { entitlements, planshipCustomerApiClient } = await useCurrentPlanshipCustomer()
+const { entitlements, planshipCustomerApiClient, fetchEntitlementsError } = await useCurrentPlanshipCustomer()
 
-const { data: subscriptions } = await useLazyAsyncData('subscriptions', async () => {
+const { data: subscriptions, error } = await useLazyAsyncData('subscriptions', async () => {
   return await planshipCustomerApiClient.listSubscriptions()
 })
 
@@ -18,8 +18,16 @@ const currentPlanName = computed(() => {
 })
 
 const subscriptionRenewAt = computed(() => {
-  return subscriptions.value[0]?.renewAt.toLocaleDateString(undefined, { hour: 'numeric', minute: 'numeric'})
+  return subscriptions.value[0]?.renewAt.toLocaleDateString(undefined, { hour: 'numeric', minute: 'numeric' })
 })
+
+if (fetchEntitlementsError.value) {
+  throw createError(usePlanshipError(fetchEntitlementsError.value))
+}
+
+if (error.value) {
+  throw createError(usePlanshipError(error.value))
+}
 </script>
 
 <template>

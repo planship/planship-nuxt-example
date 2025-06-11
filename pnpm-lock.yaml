@@ -24,8 +24,8 @@ importers:
         specifier: ^0.5.1
         version: 0.5.1(magicast@0.3.4)(rollup@4.18.1)(typescript@5.6.3)(vue@3.4.31(typescript@5.6.3))
       '@planship/nuxt':
-        specifier: 0.3.10
-        version: 0.3.10(magicast@0.3.4)
+        specifier: 0.3.11-alpha4
+        version: 0.3.11-alpha4(magicast@0.3.4)
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.39)
@@ -226,8 +226,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  '@babel/parser@7.27.4':
-    resolution: {integrity: sha512-BRmLHGwpUqLFR2jzx9orBuX/ABDkj2jLKOXrHDTN2aOKL+jFDDKaRNo9nyYsIl9h/UE/7lMKdDjKQQyxKKDZ7g==}
+  '@babel/parser@7.27.5':
+    resolution: {integrity: sha512-OsQd175SxWkGlzbny8J3K8TnnDD0N3lrIUtB92xwyRpzaenGZhxDvxN/JgU00U3CDZNj9tPuDJ5H0WS4Nt3vKg==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -288,8 +288,8 @@ packages:
     resolution: {integrity: sha512-SkSBEHwwJRU52QEVZBmMBnE5Ux2/6WU1grdYyOhpbCNxbmJrDuDCphBzKZSO3taf0zztp+qkWlymE5tVL5l0TA==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/types@7.27.3':
-    resolution: {integrity: sha512-Y1GkI4ktrtvmawoSq+4FCVHNryea6uR+qUQy0AGxLSsjCX0nVmkYQMBLHDkXZuo5hGx7eYdnIaslsdBFm7zbUw==}
+  '@babel/types@7.27.6':
+    resolution: {integrity: sha512-ETyHEk2VHHvl9b9jZP5IHPavHYk57EhanlRRuae9XCpb/j5bDCbPPMOBfCWhnl/7EDJz0jEMCi/RhccCE8r1+Q==}
     engines: {node: '>=6.9.0'}
 
   '@clack/core@0.3.4':
@@ -870,8 +870,8 @@ packages:
     resolution: {integrity: sha512-5R8FZLDxBKlkDWYsqwU1tctGJ5vwMA96WBrNkpQ0LznB2/p+3MWWTO6vz+0P0F9xvZZfkk/KKyZ3uUhnG9VJOA==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
-  '@nuxt/kit@3.17.4':
-    resolution: {integrity: sha512-l+hY8sy2XFfg3PigZj+PTu6+KIJzmbACTRimn1ew/gtCz+F38f6KTF4sMRTN5CUxiB8TRENgEonASmkAWfpO9Q==}
+  '@nuxt/kit@3.17.5':
+    resolution: {integrity: sha512-NdCepmA+S/SzgcaL3oYUeSlXGYO6BXGr9K/m1D0t0O9rApF8CSq/QQ+ja5KYaYMO1kZAEWH4s2XVcE3uPrrAVg==}
     engines: {node: '>=18.12.0'}
 
   '@nuxt/schema@3.12.3':
@@ -992,11 +992,11 @@ packages:
   '@planship/models@0.3.4':
     resolution: {integrity: sha512-vIClT0sJAhkM8bnIzoFkL6j0/2RE9kuGKKRLOIp4cRyEeonF23fWZ/ucSy6y77pH0DJaAR8daD5w1xdHRDHSTQ==}
 
-  '@planship/nuxt@0.3.10':
-    resolution: {integrity: sha512-FGKWyvDNBPRXLxy50c3HqhcadngtHZRDv9fQIv0T3RM7mToJ0zxvkBbCo9jY7ZwRw2UiKaY4RL1vR222c2sPtA==}
+  '@planship/nuxt@0.3.11-alpha4':
+    resolution: {integrity: sha512-T3bsJzkbKVqNW8fSgJ/SjNFIU9B65JhTnw4jW/ym4q3PKuGoFxiYFiBCGfl+cpIetLIsbdDd+LStqDpsHFjqAw==}
 
-  '@planship/vue@0.3.8':
-    resolution: {integrity: sha512-y5DFmDeWMQb+sXykdwxTgKFEjyco23A632R6b27dUN0g6+V3tU46iZ8D4yPUJrrk6yxiPOpgtnwnr9UWlDUtmg==}
+  '@planship/vue@0.3.9-alpha4':
+    resolution: {integrity: sha512-6dR64f+FYKLa+kKuuE6/JDkWaoPCeokzTg2amAJecpEmNvowiz/12AB262XxMIvUfkIFLBSzbcGFKHr26apP3g==}
 
   '@polka/url@1.0.0-next.25':
     resolution: {integrity: sha512-j7P6Rgr3mmtdkeDGTe0E/aYyWEWVtc5yFXtHCRHs28/jptDEWfaVOc5T7cblqy1XKPPfCxJc/8DwQ5YgLOZOVQ==}
@@ -4720,9 +4720,9 @@ snapshots:
     dependencies:
       '@babel/types': 7.24.8
 
-  '@babel/parser@7.27.4':
+  '@babel/parser@7.27.5':
     dependencies:
-      '@babel/types': 7.27.3
+      '@babel/types': 7.27.6
 
   '@babel/plugin-proposal-decorators@7.24.7(@babel/core@7.24.8)':
     dependencies:
@@ -4797,7 +4797,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  '@babel/types@7.27.3':
+  '@babel/types@7.27.6':
     dependencies:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
@@ -5287,7 +5287,7 @@ snapshots:
       - rollup
       - supports-color
 
-  '@nuxt/kit@3.17.4(magicast@0.3.4)':
+  '@nuxt/kit@3.17.5(magicast@0.3.4)':
     dependencies:
       c12: 3.0.4(magicast@0.3.4)
       consola: 3.4.2
@@ -5509,15 +5509,15 @@ snapshots:
 
   '@planship/models@0.3.4': {}
 
-  '@planship/nuxt@0.3.10(magicast@0.3.4)':
+  '@planship/nuxt@0.3.11-alpha4(magicast@0.3.4)':
     dependencies:
-      '@nuxt/kit': 3.17.4(magicast@0.3.4)
-      '@planship/vue': 0.3.8
+      '@nuxt/kit': 3.17.5(magicast@0.3.4)
+      '@planship/vue': 0.3.9-alpha4
       defu: 6.1.4
     transitivePeerDependencies:
       - magicast
 
-  '@planship/vue@0.3.8':
+  '@planship/vue@0.3.9-alpha4':
     dependencies:
       '@planship/fetch': 0.3.4
 
@@ -5997,7 +5997,7 @@ snapshots:
 
   '@vue/compiler-core@3.5.12':
     dependencies:
-      '@babel/parser': 7.27.4
+      '@babel/parser': 7.27.5
       '@vue/shared': 3.5.12
       entities: 4.5.0
       estree-walker: 2.0.2
@@ -6027,7 +6027,7 @@ snapshots:
 
   '@vue/compiler-sfc@3.5.12':
     dependencies:
-      '@babel/parser': 7.27.4
+      '@babel/parser': 7.27.5
       '@vue/compiler-core': 3.5.12
       '@vue/compiler-dom': 3.5.12
       '@vue/compiler-ssr': 3.5.12

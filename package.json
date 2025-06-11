@@ -17,7 +17,7 @@
     "@heroicons/vue": "^2.1.5",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
     "@pinia/nuxt": "^0.5.1",
-    "@planship/nuxt": "0.3.10",
+    "@planship/nuxt": "0.3.11-alpha4",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
     "nuxt": "^3.12.3",

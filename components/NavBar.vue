@@ -14,11 +14,11 @@ const { data: subscriptions, error } = await useLazyAsyncData('subscriptions', a
 })
 
 const currentPlanName = computed(() => {
-  return subscriptions.value[0]?.plan.name
+  return subscriptions.value?.[0]?.plan.name
 })
 
 const subscriptionRenewAt = computed(() => {
-  return subscriptions.value[0]?.renewAt.toLocaleDateString(undefined, { hour: 'numeric', minute: 'numeric' })
+  return subscriptions.value?.[0]?.renewAt.toLocaleDateString(undefined, { hour: 'numeric', minute: 'numeric' })
 })
 
 if (fetchEntitlementsError.value) {

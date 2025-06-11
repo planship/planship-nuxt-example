@@ -27,5 +27,11 @@ class ClickerEntitlements extends EntitlementsBase {
 // This composable provides the Planship customer context for the current user.
 export default function useCurrentPlanshipCustomer(): TPlanshipCustomerContextPromiseMixin<ClickerEntitlements> {
   const { currentUser } = storeToRefs(useUserStore())
-  return usePlanshipCustomer(currentUser.value.email, ClickerEntitlements)
+  return usePlanshipCustomer(currentUser.value.email, ClickerEntitlements, {
+    'max-projects': 3,
+    'subscription-button-clicks': 0,
+    'premium-button': false,
+    'analytics-panel': false,
+    'project-types': ['default', 'premium'],
+  })
 }

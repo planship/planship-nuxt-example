@@ -1,4 +1,8 @@
 <script setup>
+definePageMeta({
+  middleware: ['entitlement'],
+  entitlement: 'analytics-panel',
+})
 const { planshipCustomerApiClient } = useCurrentPlanshipCustomer()
 
 const { data: clickAnalytics } = await useLazyAsyncData('clickAnalytics', async () => {
